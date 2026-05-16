@@ -1,0 +1,28 @@
+<article class="post">
+    {{#if category}}
+    <div class="article-category">{{category}}</div>
+    {{/if}}
+    
+    <div class="post-header">
+        <h1>{{title}}</h1>
+        {{#if intro}}<p class="article-intro">{{intro}}</p>{{/if}}
+    </div>
+    
+    <div class="post-meta-full">
+        <div class="author-section">
+            {{#if profileImage}}<img src="{{profileImage}}" alt="{{author}}" class="author-profile">{{/if}}
+            <div class="author-info">
+                {{#if author}}<span class="article-author">{{author}}</span>{{/if}}
+                <div class="post-meta">
+                    <time datetime="{{dateISO}}">{{dateShort}}</time>
+                    <span class="reading-time">—</span>
+                    <span class="reading-time">{{readingTime}} min read</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="post-content">
+        {{content}}
+    </div>
+</article>

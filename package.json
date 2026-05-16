@@ -1,0 +1,14 @@
+{
+  "name": "simple-blog",
+  "version": "1.0.0",
+  "description": "A clean, modular static blog site",
+  "main": "scripts/build.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/dev.js",
+    "clean": "rm -rf dist"
+  },
+  "keywords": ["blog", "static", "markdown"],
+  "author": "",
+  "license": "MIT"
+}
