@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
-const path = require('path');
-const { build } = require('./html-generator');
+import path from 'path';
+
+// html-generator.js is not yet migrated to TypeScript
+const { build } = require('./html-generator') as {
+  build: (contentDir: string, templatesDir: string, outputDir: string) => void;
+};
 
 const contentDir = path.join(__dirname, '../content');
 const templatesDir = path.join(__dirname, '../src');

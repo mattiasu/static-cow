@@ -2,13 +2,21 @@
   "name": "simple-blog",
   "version": "1.0.0",
   "description": "A clean, modular static blog site",
-  "main": "scripts/build.js",
+  "main": "scripts/build.ts",
   "scripts": {
-    "build": "node scripts/build.js",
-    "dev": "node scripts/dev.js",
+    "build": "ts-node scripts/build.ts",
+    "dev": "ts-node scripts/dev.ts",
     "clean": "rm -rf dist"
   },
-  "keywords": ["blog", "static", "markdown"],
+  "keywords": [
+    "blog",
+    "static",
+    "markdown"
+  ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.9.0",
+    "ts-node": "^10.9.2"
+  }
 }
