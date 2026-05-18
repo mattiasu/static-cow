@@ -118,6 +118,9 @@ main {
 }
 
 .post-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     padding: 20px 0;
     border-bottom: 1px solid #e0e0e0;
     transition: transform 0.2s ease;
@@ -130,14 +133,10 @@ main {
 .post-card h2 {
     font-size: 24px;
     margin-bottom: 10px;
-}
-
-.post-card h2 a {
-    text-decoration: none;
     color: #000;
 }
 
-.post-card h2 a:hover {
+.post-card:hover h2 {
     color: #2DC093;
 }
 

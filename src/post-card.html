@@ -1,7 +1,7 @@
-<div class="post-card">
-    <h2><a href="/posts/{{slug}}.html">{{title}}</a></h2>
+<a href="/posts/{{slug}}.html" class="post-card">
+    <h2>{{title}}</h2>
     {{#if intro}}<p class="excerpt">{{intro}}</p>{{/if}}
     <div class="card-meta">
         <time datetime="{{dateISO}}">{{dateShort}}</time>
     </div>
-</div>
+</a>
