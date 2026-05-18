@@ -313,19 +313,84 @@ main {
 }
 
 .post-content blockquote {
-    border-left: 4px solid #0066cc;
+    border-left: 4px solid #2DC093;
     padding-left: 16px;
-    margin: 20px 0;
+    margin: 30px 20px;
     color: #666;
     font-style: italic;
 }
 
 .post-content a {
-    color: #0066cc;
+    color: #2DC093;
     text-decoration: none;
 }
 
 .post-content a:hover {
+    text-decoration: underline;
+}
+
+.post-content .excalidraw {
+    margin: 20px 0;
+    max-width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+
+.article-image {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.article-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.article-image figcaption {
+    text-align: end;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #555;
+}
+
+/* Page Content */
+.page-content {
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.page-content h1 {
+    font-size: 36px;
+    margin-bottom: 24px;
+    color: #000;
+}
+
+.page-content h2 {
+    font-size: 24px;
+    margin: 30px 0 15px 0;
+    color: #000;
+}
+
+.page-content p {
+    margin-bottom: 16px;
+}
+
+.page-content ul {
+    margin-bottom: 16px;
+    margin-left: 20px;
+}
+
+.page-content li {
+    margin-bottom: 8px;
+}
+
+.page-content a {
+    color: #2DC093;
+    text-decoration: none;
+}
+
+.page-content a:hover {
     text-decoration: underline;
 }
 

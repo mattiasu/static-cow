@@ -25,6 +25,26 @@ function markdownToHtml(markdown) {
     // Inline code
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
+    // Excalidraw SVG — inline the file directly
+    html = html.replace(/!\[excalidraw\]\(([^)]+)\)/g, (match, filename) => {
+        const svgPath = path.join(__dirname, '../assets/excalidraw', filename);
+        try {
+            const svgContent = fs.readFileSync(svgPath, 'utf-8');
+            return `<figure class="excalidraw">${svgContent}</figure>`;
+        } catch (e) {
+            console.warn(`⚠️  Excalidraw file not found: ${filename}`);
+            return `<p class="missing-figure">[Missing diagram: ${filename}]</p>`;
+        }
+    });
+
+    // Images — jpg, png, gif, webp
+    html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, filename) => {
+        return `<figure class="article-image">
+            <img src="/assets/images/${filename}" alt="${alt}">
+            ${alt ? `<figcaption>${alt}</figcaption>` : ''}
+        </figure>`;
+    });
+
     // Links
     html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
@@ -255,6 +275,61 @@ function copyAssetsFolders(assetsDir, outputDir) {
 }
 
 /**
+ * Generate static pages (about, privacy, etc)
+ */
+function generatePages(contentDir, templatesDir, outputDir) {
+    const baseTemplate = fs.readFileSync(path.join(templatesDir, 'base.html'), 'utf-8');
+    const pageTemplate = fs.readFileSync(path.join(templatesDir, 'page.html'), 'utf-8');
+    
+    // List of page files to generate
+    const pageFiles = ['about.md', 'privacy.md'];
+    
+    pageFiles.forEach(file => {
+        const filePath = path.join(contentDir, file);
+        if (!fs.existsSync(filePath)) {
+            return;
+        }
+        
+        const content = fs.readFileSync(filePath, 'utf-8');
+        
+        // Extract frontmatter
+        const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+        let title = 'Page';
+        let pageContent = content;
+        
+        if (match) {
+            const [, frontmatterStr, bodyContent] = match;
+            frontmatterStr.split('\n').forEach(line => {
+                const [key, ...valueParts] = line.split(':');
+                if (key && valueParts.length > 0) {
+                    if (key.trim() === 'title') {
+                        title = valueParts.join(':').trim();
+                    }
+                }
+            });
+            pageContent = bodyContent.trim();
+        }
+        
+        // Convert markdown to HTML
+        const htmlContent = markdownToHtml(pageContent);
+        
+        // Generate page
+        const slug = file.replace('.md', '');
+        const pageHtml = renderTemplate(pageTemplate, {
+            title: title,
+            content: htmlContent
+        });
+        
+        const html = renderTemplate(baseTemplate, {
+            title: `${title} | My Blog`,
+            content: pageHtml
+        });
+        
+        fs.writeFileSync(path.join(outputDir, `${slug}.html`), html);
+    });
+}
+
+/**
  * Main build function
  */
 function build(contentDir, templatesDir, outputDir) {
@@ -279,6 +354,7 @@ function build(contentDir, templatesDir, outputDir) {
     generateHomepage(posts, templatesDir, outputDir);
     generateArticles(posts, templatesDir, outputDir);
     generateTagPages(posts, templatesDir, outputDir);
+    generatePages(contentDir, templatesDir, outputDir);
     copyAssets(templatesDir, outputDir);
     
     // Copy assets (images, icons)

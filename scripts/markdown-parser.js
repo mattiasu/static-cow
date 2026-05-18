@@ -46,21 +46,6 @@ function calculateReadingTime(content) {
 }
 
 /**
- * Get first paragraph as excerpt/intro (max 150 chars)
- */
-function getExcerpt(content, maxLength = 150) {
-    // Remove markdown formatting for excerpt
-    let text = content
-        .split('\n')
-        .find(line => line.trim() && !line.startsWith('#'));
-    
-    if (!text) return '';
-    
-    text = text.replace(/[*_`\[\]()]/g, '');
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-}
-
-/**
  * Format date as "15 May 2026"
  */
 function formatDateShort(dateISO) {
@@ -94,10 +79,14 @@ function getAllPosts(contentDir) {
         const rawContent = fs.readFileSync(filePath, 'utf-8');
         const { metadata, content } = parseFrontmatter(rawContent);
 
+        // Skip files without a date (like about.md, privacy.md)
+        if (!metadata.date) {
+            return null;
+        }
+
         const slug = createSlug(metadata.title || file.replace('.md', ''));
         const readingTime = calculateReadingTime(content);
-        const excerpt = getExcerpt(content);
-
+        
         // Parse date
         const date = new Date(metadata.date);
         const dateISO = date.toISOString().split('T')[0];
@@ -121,10 +110,9 @@ function getAllPosts(contentDir) {
             profileImage: metadata.profileImage || '',
             intro: metadata.intro || '',
             readingTime,
-            excerpt,
             raw: rawContent
         };
-    });
+    }).filter(post => post !== null);
 
     // Sort by date, newest first
     return posts.sort((a, b) => new Date(b.dateISO) - new Date(a.dateISO));
@@ -133,7 +121,6 @@ function getAllPosts(contentDir) {
 module.exports = {
     parseFrontmatter,
     calculateReadingTime,
-    getExcerpt,
     formatDateShort,
     createSlug,
     getAllPosts

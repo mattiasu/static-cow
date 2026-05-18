@@ -22,14 +22,19 @@ But at least with SAP and Salesforce, you can point at the vendor. The platform 
 
 This is the version of the problem that has no vendor to blame. It’s a people problem, dressed up as a technical one.
 
+![excalidraw](c-e-e.svg)
+
 ## The cost of friction
 
 This is where “keep the core clean” breaks down as a principle in practice. It’s not wrong. It’s just incomplete. A principle without a boundary model is a preference. And a preference loses to a deadline, or a stakeholder with organisational weight, almost every time. But even organisations that have done the boundary work, that have defined what belongs inside and what doesn’t, and have patterns and blueprints for how to extend and integrate cleanly, still find themselves back in the same conversation. Someone is arguing for a shortcut. A team is routing around the agreed approach. A stakeholder is pushing logic into the core again. The reason is usually friction. Not malice, not ignorance, just friction. The right path exists but it’s harder than the wrong one. The extension pattern is documented somewhere nobody reads. The integration layer requires cross-team coordination that adds two weeks to a delivery. The tooling to do it properly is heavier than just hacking it in. And when the deadline is real and the pressure is on, people don’t choose the wrong path because they’ve forgotten the principle. They choose it because the right path has too many steps and the wrong one is right there. This is the part that most architecture conversations stop short of. Defining the boundary is necessary. Providing patterns for both sides of it is necessary. But if the barrier to using those patterns correctly is higher than the barrier to ignoring them, you haven’t solved the problem. You’ve just made the violation slightly more deliberate.
 
 What actually works is when the right path is also the easy path. When extending close to the core through the agreed pattern is less effort than arguing for an exception. When the blueprint for building outside and communicating back in is clear enough, documented well enough, and supported well enough that a team under pressure reaches for it naturally rather than routing around it. In SAP that might mean BTP with scaffolding already in place. In Salesforce it might mean pre-built integration patterns with guardrails that make the clean approach faster than the custom one. In a bespoke system it might mean an API contract the core owns, with enough tooling around it that consuming it is straightforward. The specifics depend on context. The principle is the same: lower the cost of doing it right until it becomes the default, not the exception.
 
+> Keeping the core clean isn’t a principle you apply once. It’s a boundary you defend continuously, and you can only defend a boundary that has been made explicit enough that the defence is a shared act, not an individual one.
+
 
 The organisations that handle this well have done the work, usually painful, often iterative, to make the line between core and extension visible enough that when the next request arrives, the conversation is about where it belongs rather than whether to do it at all. And then they’ve gone one step further. They’ve made the patterns for working on the right side of that line easy enough to use that the shortcut stops being attractive. Keep the core clean. Define where the core ends. Build the patterns for what lives outside it. And then make those patterns easy enough to use that the boundary defends itself. That’s when the principle becomes real. And if you think this is hard now, wait until AI agents are writing significant portions of your codebase. They don’t negotiate, they don’t hesitate, and they don’t remember why the boundary was there in the first place. They just fill the space they’re given. But that’s a conversation for another time.
+
 
 Stay safe & Thanks for reading 👍
 
