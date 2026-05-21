@@ -1,6 +1,6 @@
-# addy.se
+# Static Cow 🐮
 
-Personal blog by Mattias Uhlegaard. Thoughts on enterprise architecture, open source, and building things.
+Minimalistic blog site by Mattias Uhlegaard. Thoughts on enterprise architecture, open source, and building things.
 
 ## How it works
 
