@@ -17,6 +17,11 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^25.9.0",
+    "esbuild": "^0.28.0",
     "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@types/clean-css": "^4.2.11",
+    "clean-css": "^5.3.3"
   }
 }

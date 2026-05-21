@@ -22,17 +22,25 @@ function markdownToHtml(markdown: string): string {
   html = html.replace(/__(.*?)__/g, '<strong>$1</strong>');
   html = html.replace(/_(.*?)_/g, '<em>$1</em>');
 
-  // Code blocks
-  html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+  // Code blocks — escape HTML entities so tags inside code are never parsed by the browser
+  html = html.replace(/```([\s\S]*?)```/g, (_match: string, code: string) => {
+    const escaped = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return `<pre><code>${escaped}</code></pre>`;
+  });
 
-  // Inline code
-  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Inline code — same escaping for the same reason
+  html = html.replace(/`([^`]+)`/g, (_match: string, code: string) => {
+    const escaped = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return `<code>${escaped}</code>`;
+  });
 
   // Excalidraw SVG — inline the file directly
   html = html.replace(/!\[excalidraw\]\(([^)]+)\)/g, (_match: string, filename: string) => {
     const svgPath = path.join(__dirname, '../assets/excalidraw', filename);
     try {
-      const svgContent = fs.readFileSync(svgPath, 'utf-8');
+      const svgContent = fs.readFileSync(svgPath, 'utf-8')
+        .replace(/\s+width="[^"]*"/, '')
+        .replace(/\s+height="[^"]*"/, '');
       return `<figure class="excalidraw">${svgContent}</figure>`;
     } catch (e) {
       console.warn(`⚠️  Excalidraw file not found: ${filename}`);
@@ -54,14 +62,25 @@ function markdownToHtml(markdown: string): string {
   // Blockquotes
   html = html.replace(/^> (.*?)$/gm, '<blockquote>$1</blockquote>');
 
-  // Lists (unordered)
-  html = html.replace(/^\* (.*?)$/gm, '<li>$1</li>');
-  html = html.replace(/^- (.*?)$/gm, '<li>$1</li>');
-  // Fragile: only wraps the first contiguous block of <li> items — see Known Quirks in CLAUDE.md
-  html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+  /**
+   * List wrapping: each contiguous block of list items gets its own wrapper element.
+   * "Contiguous" means consecutive lines with no blank lines or other HTML between them —
+   * two lists separated by a paragraph each become independent <ul>/<ol> elements.
+   * Temporary data-list attributes mark item type before wrapping so the <ul> and <ol>
+   * passes can't match each other's items (both produce bare <li> lines otherwise).
+   */
+  html = html.replace(/^\* (.*?)$/gm, '<li data-list="ul">$1</li>');
+  html = html.replace(/^- (.*?)$/gm, '<li data-list="ul">$1</li>');
+  html = html.replace(/^\d+\. (.*?)$/gm, '<li data-list="ol">$1</li>');
 
-  // Lists (ordered)
-  html = html.replace(/^\d+\. (.*?)$/gm, '<li>$1</li>');
+  html = html.replace(
+    /(<li data-list="ul">[^\n]*<\/li>(?:\n<li data-list="ul">[^\n]*<\/li>)*)/g,
+    (match) => '<ul>' + match.replace(/ data-list="ul"/g, '') + '</ul>'
+  );
+  html = html.replace(
+    /(<li data-list="ol">[^\n]*<\/li>(?:\n<li data-list="ol">[^\n]*<\/li>)*)/g,
+    (match) => '<ol>' + match.replace(/ data-list="ol"/g, '') + '</ol>'
+  );
 
   // Paragraphs
   html = html.split('\n\n').map(para => {
@@ -139,6 +158,7 @@ function generateHomepage(posts: Post[], templatesDir: string, outputDir: string
 
   const html = renderTemplate(baseTemplate, {
     title: 'My Blog',
+    description: 'Thoughts on architecture, leadership, engineering, and humans in the loop.',
     content: homepageContent,
   });
 
@@ -148,7 +168,7 @@ function generateHomepage(posts: Post[], templatesDir: string, outputDir: string
 /**
  * Generate individual article pages
  */
-function generateArticles(posts: Post[], templatesDir: string, outputDir: string): void {
+function generateArticles(posts: Post[], templatesDir: string, outputDir: string, siteUrl: string): void {
   const baseTemplate = fs.readFileSync(path.join(templatesDir, 'base.html'), 'utf-8');
   const articleTemplate = fs.readFileSync(path.join(templatesDir, 'article.html'), 'utf-8');
 
@@ -171,12 +191,26 @@ function generateArticles(posts: Post[], templatesDir: string, outputDir: string
       content: htmlContent,
     });
 
+    const jsonLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.title,
+      description: post.intro,
+      author: { '@type': 'Person', name: post.author },
+      datePublished: post.dateISO,
+      url: `${siteUrl}/posts/${post.slug}/`,
+    });
+
     const html = renderTemplate(baseTemplate, {
       title: `${post.title} | My Blog`,
+      description: post.intro,
+      jsonLd,
       content: articleContent,
     });
 
-    fs.writeFileSync(path.join(outputDir, 'posts', `${post.slug}.html`), html);
+    const postDir = path.join(outputDir, 'posts', post.slug);
+    fs.mkdirSync(postDir, { recursive: true });
+    fs.writeFileSync(path.join(postDir, 'index.html'), html);
   });
 }
 
@@ -230,6 +264,7 @@ function generateTagPages(posts: Post[], templatesDir: string, outputDir: string
 
     const html = renderTemplate(baseTemplate, {
       title: `${tag} | My Blog`,
+      description: `Posts tagged: ${tag}`,
       content: tagContent,
     });
 
@@ -296,15 +331,17 @@ function generatePages(contentDir: string, templatesDir: string, outputDir: stri
 
     const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
     let title = 'Page';
+    let description = '';
     let pageContent = content;
 
     if (match) {
       const [, frontmatterStr, bodyContent] = match;
       frontmatterStr.split('\n').forEach(line => {
         const [key, ...valueParts] = line.split(':');
-        if (key && valueParts.length > 0 && key.trim() === 'title') {
-          title = valueParts.join(':').trim();
-        }
+        if (!key || valueParts.length === 0) return;
+        const val = valueParts.join(':').trim();
+        if (key.trim() === 'title') title = val;
+        if (key.trim() === 'description') description = val;
       });
       pageContent = bodyContent.trim();
     }
@@ -315,17 +352,20 @@ function generatePages(contentDir: string, templatesDir: string, outputDir: stri
     const pageHtml = renderTemplate(pageTemplate, { title, content: htmlContent });
     const html = renderTemplate(baseTemplate, {
       title: `${title} | My Blog`,
+      description: description || title,
       content: pageHtml,
     });
 
-    fs.writeFileSync(path.join(outputDir, `${slug}.html`), html);
+    const pageDir = path.join(outputDir, slug);
+    fs.mkdirSync(pageDir, { recursive: true });
+    fs.writeFileSync(path.join(pageDir, 'index.html'), html);
   });
 }
 
 /**
  * Main build function — orchestrates all generation steps.
  */
-function build(contentDir: string, templatesDir: string, outputDir: string): void {
+function build(contentDir: string, templatesDir: string, outputDir: string, siteUrl: string): void {
   console.log('🔨 Building blog...');
 
   if (fs.existsSync(outputDir)) {
@@ -342,7 +382,7 @@ function build(contentDir: string, templatesDir: string, outputDir: string): voi
   }
 
   generateHomepage(posts, templatesDir, outputDir);
-  generateArticles(posts, templatesDir, outputDir);
+  generateArticles(posts, templatesDir, outputDir, siteUrl);
   generateTagPages(posts, templatesDir, outputDir);
   generatePages(contentDir, templatesDir, outputDir);
   copyAssets(templatesDir, outputDir);

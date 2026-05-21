@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{title}}</title>
+    {{#if description}}<meta name="description" content="{{description}}">{{/if}}
+    {{#if jsonLd}}<script type="application/ld+json">{{jsonLd}}</script>{{/if}}
     <link rel="stylesheet" href="/styles.css">
     <link rel="icon" href="/assets/images/muhlegard-green.jpg" type="image/jpeg">
+    <script src="/search.js" defer></script>
 </head>
 <body>
     <div class="container">
         <header>
             <nav>
                 <a href="/" class="logo">Mattias Uhlegård</a>
+                <div id="search-root"></div>
             </nav>
         </header>
         <main>
@@ -19,8 +23,8 @@
         </main>
         <section class="about-section">
             <nav>
-                <a href="/about.html" class="about-link">About</a>
-                <a href="/privacy.html" class="about-link">Privacy</a>
+                <a href="/about/" class="about-link">About</a>
+                <a href="/privacy/" class="about-link">Privacy</a>
             </nav>
             <div class="copyright">
                 <p>&copy; 2026. All rights reserved.</p>

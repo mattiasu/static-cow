@@ -124,7 +124,7 @@ export function markdownToHtml(markdown: string): string {
 ## Known Quirks — Preserve These Behaviours
 
 - **Excalidraw:** `![excalidraw](file.svg)` inlines the SVG directly into a `<figure class="excalidraw">` — do not change to an `<img>` tag. Files are read from `assets/excalidraw/`
-- **List wrapping:** The regex that wraps `<li>` items in `<ul>` is fragile with non-contiguous lists — do not refactor without adding a test case first
+- **List wrapping:** Each contiguous block of `* `/ `- ` lines becomes its own `<ul>`; each contiguous block of `1. ` lines becomes its own `<ol>`. Temporary `data-list` attributes on `<li>` elements keep the two passes separate — removing them would reintroduce the bug where a single `<ul>` swallowed every `<li>` in the document.
 - **Template renderer:** Handles `{{var}}`, `{{#if var}}...{{/if}}`, and `{{#each arr}}...{{/each}}` — keep these three cases clearly separated in the code
 - **Static pages:** `about.md` and `privacy.md` in `content/` are treated as pages, not posts — they get their own template (`page.html`) and are not included in post listings
 

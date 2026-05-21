@@ -17,3 +17,12 @@ export interface Post {
 export interface TemplateData {
   [key: string]: string | number | string[] | boolean | undefined;
 }
+
+export interface SearchEntry {
+  slug: string;
+  title: string;
+  intro: string;
+  tags: string[];
+  date: string;
+  content: string;
+}
