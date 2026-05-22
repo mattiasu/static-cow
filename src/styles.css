@@ -93,6 +93,17 @@ main {
     justify-content: center;
 }
 
+.slash-m {
+    display: flex;
+    justify-content: left;
+    top: 20px;
+    right: 20px;
+    
+}
+.slash-m-image{
+    height: 40px;
+}
+
 .about-link {
     font-size: var(--font-size-meta);
     color: var(--color-text-secondary);

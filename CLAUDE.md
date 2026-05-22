@@ -26,15 +26,20 @@ blog/
 │   ├── types.ts         # Shared types — no logic
 │   ├── markdown-parser.ts
 │   ├── html-generator.ts
-│   ├── template-renderer.ts   # To be extracted from build.ts
-│   ├── build.ts         # Orchestration only
+│   ├── pipeline.ts      # Orchestration — wires all modules together
+│   ├── search-indexer.ts
+│   ├── search-bundler.ts
+│   ├── sitemap-generator.ts
+│   ├── css-minifier.ts
+│   ├── build.ts         # Entry point only — sets dirs, calls runPipeline
 │   └── dev.ts           # Dev server / watch mode
-├── src/                 # HTML templates — not TypeScript, do not move
+├── src/                 # HTML templates and browser scripts
 │   ├── base.html
 │   ├── homepage.html
 │   ├── article.html
 │   ├── page.html
 │   ├── post-card.html
+│   ├── search.ts        # Browser-side search script — bundled by esbuild, not Node
 │   └── styles.css
 ├── CLAUDE.md
 ├── tsconfig.json
@@ -49,18 +54,23 @@ blog/
 |---|---|
 | `scripts/types.ts` | Shared types and interfaces only — no logic |
 | `scripts/markdown-parser.ts` | Parse frontmatter and markdown content into `Post` objects |
-| `scripts/html-generator.ts` | Convert markdown strings to HTML |
-| `scripts/template-renderer.ts` | `{{var}}` template engine (`#if`, `#each`, simple vars) |
-| `scripts/build.ts` | Orchestration only — wires modules together, no business logic |
+| `scripts/html-generator.ts` | Convert markdown strings to HTML; contains `renderTemplate` (pending extraction) |
+| `scripts/pipeline.ts` | Orchestration — wires all build modules together; owns `SITE_URL` |
+| `scripts/search-indexer.ts` | Strips markdown and writes `dist/search-index.json` |
+| `scripts/search-bundler.ts` | Bundles `src/search.ts` into `dist/search.js` via esbuild |
+| `scripts/sitemap-generator.ts` | Generates `dist/sitemap.xml` |
+| `scripts/css-minifier.ts` | Minifies `src/styles.css` into `dist/styles.css` via clean-css |
+| `scripts/build.ts` | Entry point only — sets up `Dirs`, calls `runPipeline` |
 | `scripts/dev.ts` | Dev server and watch mode — no build logic |
+| `src/search.ts` | Browser-side search script — compiled by esbuild, not Node; exception to the no-TS-in-src rule |
 | `src/` | HTML templates — never import or require these from TypeScript |
 | `dist/` | Build output — never edit manually |
 
 **Rules:**
-- New features get new modules in `scripts/`; wire them in `build.ts`
+- New features get new modules in `scripts/`; wire them in `pipeline.ts`
 - Do not add business logic to `build.ts` or `dev.ts`
 - Do not collapse modules — if unsure where something belongs, ask
-- `src/` is for HTML templates only — do not add `.ts` files there
+- `src/` is for HTML templates and browser scripts only — `src/search.ts` is the only `.ts` file permitted there (it targets the browser, not Node)
 
 ---
 
@@ -96,6 +106,15 @@ export interface Post {
 export interface TemplateData {
   [key: string]: string | number | string[] | boolean | undefined;
 }
+
+export interface SearchEntry {
+  slug: string;
+  title: string;
+  intro: string;
+  tags: string[];
+  date: string;        // dateShort format
+  content: string;     // Markdown-stripped plain text for full-text search
+}
 ```
 
 Do not add properties to `Post` without updating this file and documenting the change in **Changelog**.
@@ -127,6 +146,8 @@ export function markdownToHtml(markdown: string): string {
 - **List wrapping:** Each contiguous block of `* `/ `- ` lines becomes its own `<ul>`; each contiguous block of `1. ` lines becomes its own `<ol>`. Temporary `data-list` attributes on `<li>` elements keep the two passes separate — removing them would reintroduce the bug where a single `<ul>` swallowed every `<li>` in the document.
 - **Template renderer:** Handles `{{var}}`, `{{#if var}}...{{/if}}`, and `{{#each arr}}...{{/each}}` — keep these three cases clearly separated in the code
 - **Static pages:** `about.md` and `privacy.md` in `content/` are treated as pages, not posts — they get their own template (`page.html`) and are not included in post listings
+- **Search index stripping order:** In `search-indexer.ts`, fenced code blocks and Excalidraw tags must be stripped before other patterns — later regexes would otherwise match content inside those blocks and produce noise in the index
+- **CSS minification:** `src/styles.css` is the source of truth; `dist/styles.css` is the minified output written at build time — never edit the dist version directly
 
 ---
 
@@ -135,7 +156,7 @@ export function markdownToHtml(markdown: string): string {
 1. Define or update types in `scripts/types.ts` first
 2. Create a new module in `scripts/` if the feature is a distinct concern
 3. Write the function signature and JSDoc before the implementation
-4. Wire it into `build.ts` last
+4. Wire it into `pipeline.ts` last
 5. Note any new quirks or edge cases in the **Known Quirks** section above
 
 ---
@@ -146,4 +167,8 @@ _Track significant decisions and changes here so context is not lost between ses
 
 - **Initial setup:** Migrated from JavaScript to TypeScript strict mode
 - **Structure confirmed:** `scripts/` for build pipeline, `src/` for HTML templates, `dist/` for output
-- **Pending:** Extract template renderer from `build.ts` into `scripts/template-renderer.ts`
+- **Pipeline extracted:** `build.ts` is now a thin entry point; all orchestration moved to `pipeline.ts`
+- **Search added:** `search-indexer.ts` builds `dist/search-index.json`; `search-bundler.ts` compiles `src/search.ts` → `dist/search.js` via esbuild; `SearchEntry` type added to `types.ts`
+- **Sitemap added:** `sitemap-generator.ts` writes `dist/sitemap.xml` with static + post URLs
+- **CSS minification added:** `css-minifier.ts` minifies via clean-css at build time
+- **Pending:** Extract `renderTemplate` from `html-generator.ts` into `scripts/template-renderer.ts`
