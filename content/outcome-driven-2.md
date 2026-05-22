@@ -4,7 +4,7 @@ date: 2025-08-18
 category: Architecture
 author: Mattias Uhlegård
 profileImage: /assets/images/muhlegard-green.jpg
-intro: TBD.
+intro: Architecture gets a bad reputation for slowing things down. But to me, it doesn’t have to. This is about what I've seen happen when you shift the focus from the idea of control to to outcomes, and start using architecture as a way to learn faster, adapt to context, and actually help teams deliver the right things.
 tags: collaboration, performance, EA
 ---
 
@@ -21,7 +21,6 @@ This is what I mean by Outcome-Driven Architecture.
 ## Architecture That Keeps Up
 
 ![excalidraw](speed-timeline.svg)
-
 
 When we were rolling out a new internal platform at one of the companies I've worked at, we began with rapid iterations to validate ideas. In that phase, speed meant learning quickly and adjusting fast. That ability to do rapid exploring and quickly remove the ideas that wasn't as good as we imaged is worth it's own article. It requires grit, method, cultural investments, but well worth focusing on.
 
@@ -44,7 +43,7 @@ A common misalignment, especially between engineering teams and management, is a
 
 ## A common pitfall: Don’t Forget the People
 
-I'm always on about the importance of people, culture, being human. Architecture doesn’t succeed because it’s clever. It succeeds because people understand it, believe in it, and feel ownership over it. This echoes the idea from Marty Cagan’s Empowered: that truly effective teams are trusted with problems, not just tasks. Outcome-driven architecture works best when the people closest to the problem have the context, support, and trust to shape the solution. 
+I'm always on about the importance of people, culture, being human. Architecture doesn’t succeed because it’s clever. It succeeds because people understand it, believe in it, and feel ownership over it. This echoes the idea from Marty Cagan’s Empowered: that truly effective teams are trusted with problems, not just tasks. Outcome-driven architecture works best when the people closest to the problem have the context, support, and trust to shape the solution.
 
 I've seen both ends of this. Architecture introduced by a central team and quietly ignored. And architecture shaped collaboratively, embedded in team rituals and roadmaps, driving real decisions. Only one of those leads to results. This is a people problem, not a tooling one. Outcome-Driven Architecture forces us to ask: Who needs to understand this to make a better decision? Then you meet them where they are. Sometimes that’s a wiki page. Sometimes that’s a spike in code. Sometimes it’s a Slack thread. What matters is that you get there together.
 
@@ -52,24 +51,23 @@ I've seen both ends of this. Architecture introduced by a central team and quiet
 
 If you’re an architect, Staff Engineer, or tech lead, here are a few ways to start working more outcome-driven today:
 
-*   Start with outcomes. Don’t start with systems or patterns. Start with the business or user goal, and work backward from there.
-    
-*   Understand your phase. Are you exploring or stabilizing? The kind of architecture you need, and the kind of speed you expect, should reflect that.
-    
-*   Blur the boundaries. Don’t treat architecture as a separate activity. Encourage everyone to participate in shaping it, regardless of title.
-    
-*   Embrace context. Tailor your decisions to your domain, your constraints, and your people. 
+* Start with outcomes. Don’t start with systems or patterns. Start with the business or user goal, and work backward from there.
 
-*   Keep learning loops tight. The faster you learn, the better your architecture will evolve, especially when it’s grounded in outcomes.
+* Understand your phase. Are you exploring or stabilizing? The kind of architecture you need, and the kind of speed you expect, should reflect that.
 
-*   Much like Cagan describes in Empowered, outcome-driven architecture starts by trusting the team with outcomes rather than prescribing the solution. Architecture isn’t something handed down, it’s something discovered through guided ownership and context.
-    
+* Blur the boundaries. Don’t treat architecture as a separate activity. Encourage everyone to participate in shaping it, regardless of title.
+
+* Embrace context. Tailor your decisions to your domain, your constraints, and your people.
+
+* Keep learning loops tight. The faster you learn, the better your architecture will evolve, especially when it’s grounded in outcomes.
+
+* Much like Cagan describes in Empowered, outcome-driven architecture starts by trusting the team with outcomes rather than prescribing the solution. Architecture isn’t something handed down, it’s something discovered through guided ownership and context.
 
 ## Looking Ahead
 
-Outcome-driven architecture isn’t just a fix for slow decision-making. It’s a way to reconnect architecture with purpose. With people. With business reality. It’s how we shift from getting the architecture right to making sure it’s right for the outcomes we care about. 
+Outcome-driven architecture isn’t just a fix for slow decision-making. It’s a way to reconnect architecture with purpose. With people. With business reality. It’s how we shift from getting the architecture right to making sure it’s right for the outcomes we care about.
 
-In the next post, I’ll dive into what this looks like in a federated enterprise model, where different domains need to move at different speeds, and where alignment comes from shared intent rather than central control. 
+In the next post, I’ll dive into what this looks like in a federated enterprise model, where different domains need to move at different speeds, and where alignment comes from shared intent rather than central control.
 
 Until then: architecture that slows you down is still bad architecture. But the kind that brings people together, adapts to context, and keeps outcomes front and center? That’s the kind that lasts.
 
