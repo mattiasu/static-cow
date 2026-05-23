@@ -2,7 +2,7 @@
 title: About
 ---
 
-Hi, I'm Mattias Uhlegård. Software engineer by heart, currently working as Chief Enterprise Architect, with a focus on architecture, developer experience, and helping organisations build better software.
+Hi, I'm Mattias Uhlegård. Software engineer by heart, currently working as Chief Enterprise Architect, with a focus on moving the needle on all things architecure, developer experience, and helping teams build better software.
 
 ![Gothenburg Tech Week 2025](gbg-tw2025.jpg) 
 
