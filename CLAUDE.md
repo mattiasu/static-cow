@@ -1,9 +1,11 @@
 # Static Site Generator — Claude Instructions
 
 ## Project Overview
-A Node.js static site generator that builds a blog from markdown files.
-- **Entry point:** `npm run build`
-- **Dev server:** `npm run dev` (via `scripts/dev.ts`)
+A Node.js static site generator that builds a blog from markdown files, served by a Cloudflare Worker.
+- **Static build:** `npm run build` — compiles markdown → HTML into `dist/`
+- **Static dev server:** `npm run dev` (via `scripts/dev.ts`) — watches and rebuilds static files only; no Worker, no KV
+- **Full dev (Worker + assets):** `npx wrangler dev` — runs the Worker locally with KV bindings and serves `dist/` as assets; requires `npm run build` first or in watch mode alongside
+- **Deploy:** `npx wrangler deploy`
 - **Language:** TypeScript (strict mode)
 - **Output:** `dist/` — static HTML files, never edit manually
 
@@ -22,6 +24,9 @@ blog/
 │   ├── privacy.md
 │   └── *.md             # Blog posts
 ├── dist/                # Build output — never edit manually
+├── functions/           # Cloudflare Worker — runs server-side, not Node
+│   ├── index.ts         # Worker entry point — routing + Env interface
+│   └── subscribe.ts     # POST /api/subscribe handler
 ├── scripts/             # TypeScript build pipeline
 │   ├── types.ts         # Shared types — no logic
 │   ├── markdown-parser.ts
@@ -64,13 +69,17 @@ blog/
 | `scripts/dev.ts` | Dev server and watch mode — no build logic |
 | `src/search.ts` | Browser-side search script — compiled by esbuild, not Node; exception to the no-TS-in-src rule |
 | `src/` | HTML templates — never import or require these from TypeScript |
+| `functions/index.ts` | Worker entry point — request routing and `Env` interface definition |
+| `functions/subscribe.ts` | POST /api/subscribe — email validation, KV dedup, response shaping |
 | `dist/` | Build output — never edit manually |
 
 **Rules:**
-- New features get new modules in `scripts/`; wire them in `pipeline.ts`
+- New static build features get new modules in `scripts/`; wire them in `pipeline.ts`
+- New API endpoints go in `functions/`; add routing in `functions/index.ts`
 - Do not add business logic to `build.ts` or `dev.ts`
 - Do not collapse modules — if unsure where something belongs, ask
 - `src/` is for HTML templates and browser scripts only — `src/search.ts` is the only `.ts` file permitted there (it targets the browser, not Node)
+- `functions/` targets the Workers runtime — do not import Node built-ins there
 
 ---
 
@@ -153,11 +162,18 @@ export function markdownToHtml(markdown: string): string {
 
 ## When Adding Features
 
+### Static site features
 1. Define or update types in `scripts/types.ts` first
 2. Create a new module in `scripts/` if the feature is a distinct concern
 3. Write the function signature and JSDoc before the implementation
 4. Wire it into `pipeline.ts` last
 5. Note any new quirks or edge cases in the **Known Quirks** section above
+
+### API endpoints (Worker)
+1. Create a handler file in `functions/` (e.g. `functions/contact.ts`)
+2. Add the route in `functions/index.ts`
+3. Add any new KV or binding to `wrangler.toml` and the `Env` interface in `functions/index.ts`
+4. Test with `npx wrangler dev` — `npm run dev` does not run the Worker
 
 ---
 
@@ -171,4 +187,6 @@ _Track significant decisions and changes here so context is not lost between ses
 - **Search added:** `search-indexer.ts` builds `dist/search-index.json`; `search-bundler.ts` compiles `src/search.ts` → `dist/search.js` via esbuild; `SearchEntry` type added to `types.ts`
 - **Sitemap added:** `sitemap-generator.ts` writes `dist/sitemap.xml` with static + post URLs
 - **CSS minification added:** `css-minifier.ts` minifies via clean-css at build time
+- **Worker added:** Cloudflare Worker in `functions/` handles API routes; `wrangler.toml` wires KV and assets; `npx wrangler dev` is the dev command for anything involving the Worker
+- **Worker moved:** Worker files relocated from `src/` to `functions/`; `wrangler.toml` updated to `main = "./functions/index.ts"`
 - **Pending:** Extract `renderTemplate` from `html-generator.ts` into `scripts/template-renderer.ts`

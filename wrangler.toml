@@ -1,6 +1,11 @@
 name = "static-cow"
-main = "./src/index.ts"
+main = "./functions/index.ts"
 compatibility_date = "2026-05-23"
+
+[[kv_namespaces]]
+binding = "SUBSCRIBERS"
+id = "d5a016091a214405bc30209d22efa722"
+preview_id = "9eb7d55f402143bf83be184c7fdce014"
 
 [assets]
 directory = "./dist"

@@ -37,8 +37,66 @@
         </section>
         <section class="newsletter-section">
             <h2 class="newsletter-title">Newsletter</h2>
-            <p class="newsletter-description">Thoughts on architecure, leadership, engineering, and humans in the loop.</p>
+            <p class="newsletter-description">Thoughts on architecture, leadership, engineering, and humans in the loop.</p>
+            <form class="newsletter-form" id="newsletter-form" novalidate>
+                <div class="newsletter-fields">
+                    <input type="email" class="newsletter-input" id="newsletter-email"
+                        placeholder="jamie@example.com" autocomplete="email" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </div>
+                <p class="newsletter-message" id="newsletter-message" hidden></p>
+            </form>
         </section>
+        <script>
+        (function () {
+            var form = document.getElementById('newsletter-form');
+            if (!form) return;
+            var input = document.getElementById('newsletter-email');
+            var btn = form.querySelector('button[type="submit"]');
+            var msg = document.getElementById('newsletter-message');
+            var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                var email = input.value.trim();
+
+                if (!EMAIL_RE.test(email)) {
+                    show('Please enter a valid email address.', false);
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.textContent = 'Subscribing…';
+                msg.hidden = true;
+
+                try {
+                    var res = await fetch('/api/subscribe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email }),
+                    });
+                    var data = await res.json();
+                    if (res.ok) {
+                        form.innerHTML = '<p class="newsletter-message newsletter-message--success">You\'re in — thanks for subscribing!</p>';
+                    } else {
+                        show(data.error || 'Something went wrong. Please try again.', false);
+                        btn.disabled = false;
+                        btn.textContent = 'Subscribe';
+                    }
+                } catch (_) {
+                    show('Something went wrong. Please try again.', false);
+                    btn.disabled = false;
+                    btn.textContent = 'Subscribe';
+                }
+            });
+
+            function show(text, success) {
+                msg.textContent = text;
+                msg.className = 'newsletter-message ' + (success ? 'newsletter-message--success' : 'newsletter-message--error');
+                msg.hidden = false;
+            }
+        }());
+        </script>
     </div>
 </body>
 </html>

@@ -18,7 +18,8 @@
   "devDependencies": {
     "@types/node": "^25.9.0",
     "esbuild": "^0.28.0",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "wrangler": "^4.94.0"
   },
   "dependencies": {
     "@types/clean-css": "^4.2.11",
