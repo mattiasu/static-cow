@@ -6,7 +6,7 @@ All views here are my own — personal reflections, learnings, and ideas.
 
 ## Privacy
 
-No cookies. No tracking. No analytics. I don't collect any data about you when you visit this site.
+No tracking. No analytics. I don't collect any data about you when you visit this site. The only thing I store in a cookie is IF you have subscribed to the newsletter or not, not you though, just if someone on your computer signed up for it. I guess you understand.  😁​
 
 If you email me, I'll read it and reply. That's the extent of it.
 
