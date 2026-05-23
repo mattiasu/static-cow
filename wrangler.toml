@@ -2,10 +2,10 @@ name = "static-cow"
 main = "./functions/index.ts"
 compatibility_date = "2026-05-23"
 
-[[kv_namespaces]]
-binding = "SUBSCRIBERS"
-id = "d5a016091a214405bc30209d22efa722"
-preview_id = "9eb7d55f402143bf83be184c7fdce014"
+[[d1_databases]]
+binding = "SUBSCRIBERS_DB"
+database_name = "SUBSCRIBERS_DB"
+database_id = "7002e4e4-c085-4b1b-95c4-0e340a4409aa"
 
 [assets]
 directory = "./dist"

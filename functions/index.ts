@@ -1,8 +1,11 @@
-import { handleSubscribe } from './subscribe';
+import { handleSubscribe } from './api/subscribe';
+import { handleNotify } from './api/notify';
 
 export interface Env {
   ASSETS: Fetcher;
-  SUBSCRIBERS: KVNamespace;
+  SUBSCRIBERS_DB: D1Database;
+  RESEND_API_KEY: string;
+  NOTIFY_TOKEN: string;
 }
 
 export default {
@@ -11,6 +14,10 @@ export default {
 
     if (url.pathname === '/api/subscribe' && request.method === 'POST') {
       return handleSubscribe(request, env);
+    }
+
+    if (url.pathname === '/api/notify' && request.method === 'POST') {
+      return handleNotify(request, env);
     }
 
     if (url.pathname.startsWith('/api/')) {

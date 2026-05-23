@@ -51,6 +51,28 @@
         (function () {
             var form = document.getElementById('newsletter-form');
             if (!form) return;
+
+            function isSubscribed() {
+                return document.cookie.split(';').some(function (c) {
+                    return c.trim() === 'subscribed=true';
+                });
+            }
+
+            function setSubscribedCookie() {
+                var expires = new Date();
+                expires.setFullYear(expires.getFullYear() + 1);
+                document.cookie = 'subscribed=true; Path=/; SameSite=Lax; Expires=' + expires.toUTCString();
+            }
+
+            function showConfirmed() {
+                form.innerHTML = '<p class="newsletter-message newsletter-message--success">You are subscribed.</p>';
+            }
+
+            if (isSubscribed()) {
+                showConfirmed();
+                return;
+            }
+
             var input = document.getElementById('newsletter-email');
             var btn = form.querySelector('button[type="submit"]');
             var msg = document.getElementById('newsletter-message');
@@ -77,7 +99,8 @@
                     });
                     var data = await res.json();
                     if (res.ok) {
-                        form.innerHTML = '<p class="newsletter-message newsletter-message--success">You\'re in — thank you for subscribing!</p>';
+                        setSubscribedCookie();
+                        showConfirmed();
                     } else {
                         show(data.error || 'Something went wrong. Please try again.', false);
                         btn.disabled = false;

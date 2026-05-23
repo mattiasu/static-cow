@@ -1,8 +1,8 @@
-import type { Env } from './index';
+import type { Env } from '../index';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function json(body: Record<string, string>, status: number): Response {
+function json(body: Record<string, unknown>, status: number): Response {
   return new Response(JSON.stringify(body), {
     status,
     headers: { 'Content-Type': 'application/json' },
@@ -23,12 +23,17 @@ export async function handleSubscribe(request: Request, env: Env): Promise<Respo
     return json({ error: 'Invalid email address' }, 400);
   }
 
-  const existing = await env.SUBSCRIBERS.get(email);
-  if (existing !== null) {
-    return json({ error: 'Already subscribed' }, 409);
+  try {
+    await env.SUBSCRIBERS_DB
+      .prepare('INSERT INTO subscribers (email) VALUES (?)')
+      .bind(email)
+      .run();
+  } catch (err: unknown) {
+    if (err instanceof Error && err.message.includes('UNIQUE constraint failed')) {
+      return json({ error: 'Already subscribed' }, 409);
+    }
+    throw err;
   }
-
-  await env.SUBSCRIBERS.put(email, new Date().toISOString());
 
   return json({ message: 'Subscribed successfully' }, 201);
 }
