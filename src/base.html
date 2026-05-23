@@ -77,7 +77,7 @@
                     });
                     var data = await res.json();
                     if (res.ok) {
-                        form.innerHTML = '<p class="newsletter-message newsletter-message--success">You\'re in — thanks for subscribing!</p>';
+                        form.innerHTML = '<p class="newsletter-message newsletter-message--success">You\'re in — thank you for subscribing!</p>';
                     } else {
                         show(data.error || 'Something went wrong. Please try again.', false);
                         btn.disabled = false;
