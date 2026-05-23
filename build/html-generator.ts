@@ -36,7 +36,7 @@ function markdownToHtml(markdown: string): string {
 
   // Excalidraw SVG — inline the file directly
   html = html.replace(/!\[excalidraw\]\(([^)]+)\)/g, (_match: string, filename: string) => {
-    const svgPath = path.join(__dirname, '../assets/excalidraw', filename);
+    const svgPath = path.join(__dirname, '../web/assets/excalidraw', filename);
     try {
       const svgContent = fs.readFileSync(svgPath, 'utf-8')
         .replace(/\s+width="[^"]*"/, '')
@@ -387,7 +387,7 @@ function build(contentDir: string, templatesDir: string, outputDir: string, site
   generatePages(contentDir, templatesDir, outputDir);
   copyAssets(templatesDir, outputDir);
 
-  const assetsDir = path.join(path.dirname(templatesDir), 'assets');
+  const assetsDir = path.join(templatesDir, 'assets');
   copyAssetsFolders(assetsDir, outputDir);
 
   console.log('✅ Build complete!');

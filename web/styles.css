@@ -537,7 +537,16 @@ main {
 .search-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.search-open .container {
+    filter: blur(4px);
+    transition: filter 0.15s ease;
+}
+
+.container {
+    transition: filter 0.15s ease;
 }
 
 .search-box {

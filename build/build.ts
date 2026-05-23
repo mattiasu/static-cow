@@ -6,7 +6,7 @@ import type { Dirs } from './pipeline';
 
 const dirs: Dirs = {
   contentDir: path.join(__dirname, '../content'),
-  templatesDir: path.join(__dirname, '../src'),
+  templatesDir: path.join(__dirname, '../web'),
   outputDir: path.join(__dirname, '../dist'),
 };
 

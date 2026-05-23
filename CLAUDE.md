@@ -3,7 +3,7 @@
 ## Project Overview
 A Node.js static site generator that builds a blog from markdown files, served by a Cloudflare Worker.
 - **Static build:** `npm run build` — compiles markdown → HTML into `dist/`
-- **Static dev server:** `npm run dev` (via `scripts/dev.ts`) — watches and rebuilds static files only; no Worker, no D1
+- **Static dev server:** `npm run dev` (via `build/dev.ts`) — watches and rebuilds static files only; no Worker, no D1
 - **Full dev (Worker + assets):** `npx wrangler dev` — runs the Worker locally with D1 bindings and serves `dist/` as assets; requires `npm run build` first or in watch mode alongside
 - **Deploy:** `npx wrangler deploy`
 - **Language:** TypeScript (strict mode)
@@ -15,10 +15,17 @@ A Node.js static site generator that builds a blog from markdown files, served b
 
 ```
 blog/
-├── assets/              # Static assets — copied to dist/ at build time
-│   ├── excalidraw/      # SVG diagrams, inlined at build time
-│   ├── icons/
-│   └── images/
+├── build/               # Node.js build pipeline — runs at build time
+│   ├── types.ts         # Shared types — no logic
+│   ├── markdown-parser.ts
+│   ├── html-generator.ts
+│   ├── pipeline.ts      # Orchestration — wires all modules together
+│   ├── search-indexer.ts
+│   ├── search-bundler.ts
+│   ├── sitemap-generator.ts
+│   ├── css-minifier.ts
+│   ├── build.ts         # Entry point only — sets dirs, calls runPipeline
+│   └── dev.ts           # Dev server / watch mode
 ├── content/             # Markdown source files
 │   ├── about.md
 │   ├── privacy.md
@@ -31,18 +38,11 @@ blog/
 │   │   ├── subscribe.ts # POST /api/subscribe — D1 insert with duplicate check
 │   │   └── notify.ts    # POST /api/notify — send newsletter via Resend API
 │   └── index.ts         # Worker entry point — routing + Env interface
-├── scripts/             # TypeScript build pipeline
-│   ├── types.ts         # Shared types — no logic
-│   ├── markdown-parser.ts
-│   ├── html-generator.ts
-│   ├── pipeline.ts      # Orchestration — wires all modules together
-│   ├── search-indexer.ts
-│   ├── search-bundler.ts
-│   ├── sitemap-generator.ts
-│   ├── css-minifier.ts
-│   ├── build.ts         # Entry point only — sets dirs, calls runPipeline
-│   └── dev.ts           # Dev server / watch mode
-├── src/                 # HTML templates and browser scripts
+├── web/                 # Browser-facing source — HTML templates, styles, scripts, and static assets
+│   ├── assets/
+│   │   ├── excalidraw/  # SVG diagrams, inlined at build time
+│   │   ├── icons/
+│   │   └── images/
 │   ├── base.html
 │   ├── homepage.html
 │   ├── article.html
@@ -61,18 +61,18 @@ blog/
 
 | File | Responsibility |
 |---|---|
-| `scripts/types.ts` | Shared types and interfaces only — no logic |
-| `scripts/markdown-parser.ts` | Parse frontmatter and markdown content into `Post` objects |
-| `scripts/html-generator.ts` | Convert markdown strings to HTML; contains `renderTemplate` (pending extraction) |
-| `scripts/pipeline.ts` | Orchestration — wires all build modules together; owns `SITE_URL` |
-| `scripts/search-indexer.ts` | Strips markdown and writes `dist/search-index.json` |
-| `scripts/search-bundler.ts` | Bundles `src/search.ts` into `dist/search.js` via esbuild |
-| `scripts/sitemap-generator.ts` | Generates `dist/sitemap.xml` |
-| `scripts/css-minifier.ts` | Minifies `src/styles.css` into `dist/styles.css` via clean-css |
-| `scripts/build.ts` | Entry point only — sets up `Dirs`, calls `runPipeline` |
-| `scripts/dev.ts` | Dev server and watch mode — no build logic |
-| `src/search.ts` | Browser-side search script — compiled by esbuild, not Node; exception to the no-TS-in-src rule |
-| `src/` | HTML templates — never import or require these from TypeScript |
+| `build/types.ts` | Shared types and interfaces only — no logic |
+| `build/markdown-parser.ts` | Parse frontmatter and markdown content into `Post` objects |
+| `build/html-generator.ts` | Convert markdown strings to HTML; contains `renderTemplate` (pending extraction) |
+| `build/pipeline.ts` | Orchestration — wires all build modules together; owns `SITE_URL` |
+| `build/search-indexer.ts` | Strips markdown and writes `dist/search-index.json` |
+| `build/search-bundler.ts` | Bundles `web/search.ts` into `dist/search.js` via esbuild |
+| `build/sitemap-generator.ts` | Generates `dist/sitemap.xml` |
+| `build/css-minifier.ts` | Minifies `web/styles.css` into `dist/styles.css` via clean-css |
+| `build/build.ts` | Entry point only — sets up `Dirs`, calls `runPipeline` |
+| `build/dev.ts` | Dev server and watch mode — no build logic |
+| `web/search.ts` | Browser-side search script — compiled by esbuild, not Node; only `.ts` file permitted in `web/` |
+| `web/` | HTML templates and static assets — never import or require these from TypeScript |
 | `functions/index.ts` | Worker entry point — request routing and `Env` interface definition |
 | `functions/api/subscribe.ts` | POST /api/subscribe — email validation, D1 insert, duplicate check |
 | `functions/api/notify.ts` | POST /api/notify — auth token gate, D1 query, Resend batch send |
@@ -80,11 +80,11 @@ blog/
 | `dist/` | Build output — never edit manually |
 
 **Rules:**
-- New static build features get new modules in `scripts/`; wire them in `pipeline.ts`
+- New static build features get new modules in `build/`; wire them in `pipeline.ts`
 - New API endpoints go in `functions/api/`; add routing in `functions/index.ts`
 - Do not add business logic to `build.ts` or `dev.ts`
 - Do not collapse modules — if unsure where something belongs, ask
-- `src/` is for HTML templates and browser scripts only — `src/search.ts` is the only `.ts` file permitted there (it targets the browser, not Node)
+- `web/` is for HTML templates, static assets, and browser scripts only — `web/search.ts` is the only `.ts` file permitted there (it targets the browser, not Node)
 - `functions/` targets the Workers runtime — do not import Node built-ins there
 
 ---
@@ -93,13 +93,13 @@ blog/
 
 - **Strict mode is required:** `"strict": true` in `tsconfig.json` — never disable it or add `@ts-ignore` without a comment explaining why
 - Target: Node.js (`"module": "commonjs"`, `"target": "ES2020"` or later)
-- Compile output goes to `dist/` or a separate `compiled/` dir — not mixed with HTML templates in `src/`
+- Compile output goes to `dist/` or a separate `compiled/` dir — not mixed with HTML templates in `web/`
 - No implicit `any` — every parameter and return type must be explicit
 - Prefer `interface` for object shapes, `type` for unions and aliases
 
 ---
 
-## Core Types (defined in `scripts/types.ts`)
+## Core Types (defined in `build/types.ts`)
 
 ```ts
 export interface Post {
@@ -169,8 +169,8 @@ export function markdownToHtml(markdown: string): string {
 ## When Adding Features
 
 ### Static site features
-1. Define or update types in `scripts/types.ts` first
-2. Create a new module in `scripts/` if the feature is a distinct concern
+1. Define or update types in `build/types.ts` first
+2. Create a new module in `build/` if the feature is a distinct concern
 3. Write the function signature and JSDoc before the implementation
 4. Wire it into `pipeline.ts` last
 5. Note any new quirks or edge cases in the **Known Quirks** section above
@@ -204,12 +204,13 @@ Variables split between `wrangler.toml` (non-secret config) and Cloudflare secre
 _Track significant decisions and changes here so context is not lost between sessions._
 
 - **Initial setup:** Migrated from JavaScript to TypeScript strict mode
-- **Structure confirmed:** `scripts/` for build pipeline, `src/` for HTML templates, `dist/` for output
+- **Structure confirmed:** `build/` for build pipeline, `web/` for HTML templates + assets, `dist/` for output
 - **Pipeline extracted:** `build.ts` is now a thin entry point; all orchestration moved to `pipeline.ts`
-- **Search added:** `search-indexer.ts` builds `dist/search-index.json`; `search-bundler.ts` compiles `src/search.ts` → `dist/search.js` via esbuild; `SearchEntry` type added to `types.ts`
+- **Search added:** `search-indexer.ts` builds `dist/search-index.json`; `search-bundler.ts` compiles `web/search.ts` → `dist/search.js` via esbuild; `SearchEntry` type added to `types.ts`
 - **Sitemap added:** `sitemap-generator.ts` writes `dist/sitemap.xml` with static + post URLs
 - **CSS minification added:** `css-minifier.ts` minifies via clean-css at build time
 - **Worker added:** Cloudflare Worker in `functions/` handles API routes; `npx wrangler dev` is the dev command for anything involving the Worker
-- **Worker moved:** Worker files relocated from `src/` to `functions/`; `wrangler.toml` updated to `main = "./functions/index.ts"`
+- **Worker moved:** Worker files relocated to `functions/`; `wrangler.toml` updated to `main = "./functions/index.ts"`
 - **D1 migration:** Subscriber storage moved from KV to D1; schema at `db/schema.sql`; handlers reorganised into `functions/api/`; `/api/notify` endpoint added (Resend, batched, token-protected)
-- **Pending:** Extract `renderTemplate` from `html-generator.ts` into `scripts/template-renderer.ts`
+- **Pending:** Extract `renderTemplate` from `html-generator.ts` into `build/template-renderer.ts`
+- **Restructured:** `scripts/` → `build/`, `src/` → `web/`, `assets/` moved into `web/assets/`

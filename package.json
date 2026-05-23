@@ -2,10 +2,10 @@
   "name": "simple-blog",
   "version": "1.0.0",
   "description": "A clean, modular static blog site",
-  "main": "scripts/build.ts",
+  "main": "build/build.ts",
   "scripts": {
-    "build": "ts-node scripts/build.ts",
-    "dev": "ts-node scripts/dev.ts",
+    "build": "ts-node build/build.ts",
+    "dev": "ts-node build/dev.ts",
     "clean": "rm -rf dist"
   },
   "keywords": [

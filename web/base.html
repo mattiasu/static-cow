@@ -65,7 +65,8 @@
             }
 
             function showConfirmed() {
-                form.innerHTML = '<p class="newsletter-message newsletter-message--success">You are subscribed.</p>';
+                var section = form.closest('.newsletter-section');
+                if (section) section.hidden = true;
             }
 
             if (isSubscribed()) {

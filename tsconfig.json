@@ -9,8 +9,8 @@
     "skipLibCheck": true,
     "types": ["node"],
     "outDir": "compiled",
-    "rootDir": "scripts"
+    "rootDir": "build"
   },
-  "include": ["scripts/**/*.ts"],
+  "include": ["build/**/*.ts"],
   "exclude": ["node_modules", "dist", "compiled"]
 }

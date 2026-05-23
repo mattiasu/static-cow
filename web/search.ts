@@ -1,4 +1,4 @@
-import type { SearchEntry } from '../scripts/types';
+import type { SearchEntry } from '../build/types';
 
 let cachedIndex: SearchEntry[] | null = null;
 let debounceTimer: ReturnType<typeof setTimeout> | undefined;
@@ -113,6 +113,7 @@ function openModal(): void {
   if (isOpen) return;
   isOpen = true;
   modal.removeAttribute('hidden');
+  document.body.classList.add('search-open');
   input.focus();
 }
 
@@ -120,6 +121,7 @@ function closeModal(): void {
   if (!isOpen) return;
   isOpen = false;
   modal.setAttribute('hidden', '');
+  document.body.classList.remove('search-open');
   input.value = '';
   results.innerHTML = '';
 }
