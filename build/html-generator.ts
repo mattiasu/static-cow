@@ -204,6 +204,7 @@ function generateArticles(posts: Post[], templatesDir: string, outputDir: string
     const html = renderTemplate(baseTemplate, {
       title: `${post.title} | My Blog`,
       description: post.intro,
+      canonicalUrl: `${siteUrl}/posts/${post.slug}/`,
       jsonLd,
       content: articleContent,
     });
