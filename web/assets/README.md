@@ -1,6 +1,6 @@
 # Assets Folder
 
-This folder contains images and SVG icons used throughout your blog.
+This folder contains images and SVG icons used throughout the blog.
 
 ## Structure
 
