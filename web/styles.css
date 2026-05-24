@@ -236,6 +236,10 @@ main {
     transition: transform 0.2s ease;
 }
 
+.post-card:last-child {
+    border-bottom: none;
+}
+
 .post-card:hover {
     transform: translateX(4px);
 }

@@ -295,14 +295,17 @@ function copyAssetsFolders(assetsDir: string, outputDir: string): void {
     return;
   }
 
+  const isIgnored = (name: string) => name === 'README.md';
+
   const items = fs.readdirSync(assetsDir);
   items.forEach(item => {
+    if (isIgnored(item)) return;
     const src = path.join(assetsDir, item);
     const dest = path.join(outputDir, 'assets', item);
     const stats = fs.statSync(src);
 
     if (stats.isDirectory()) {
-      fs.cpSync(src, dest, { recursive: true });
+      fs.cpSync(src, dest, { recursive: true, filter: (s) => !isIgnored(path.basename(s)) });
     } else {
       ensureDir(path.dirname(dest));
       fs.copyFileSync(src, dest);

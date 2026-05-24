@@ -5,7 +5,7 @@ import { generateSitemap } from './sitemap-generator';
 import { bundleSearchScript } from './search-bundler';
 import { minifyCss } from './css-minifier';
 
-const SITE_URL = 'https://www.addy.se';
+const SITE_URL = 'https://addy.se';
 
 const { build: buildHtml } = require('./html-generator') as {
   build: (contentDir: string, templatesDir: string, outputDir: string, siteUrl: string) => void;
