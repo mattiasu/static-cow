@@ -1,4 +1,4 @@
-# Static Site Generator — Claude Instructions
+# Static Site Generator —  Claude Instructions
 
 ## Project Overview
 A Node.js static site generator that builds a blog from markdown files, served by a Cloudflare Worker.
