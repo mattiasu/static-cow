@@ -1,5 +1,6 @@
 import { handleSubscribe } from './api/subscribe';
 import { handleNotify } from './api/notify';
+import { handleNotifyNew } from './api/notify-new';
 
 export interface Env {
   ASSETS: Fetcher;
@@ -24,6 +25,10 @@ export default {
 
     if (url.pathname === '/api/notify' && request.method === 'POST') {
       return handleNotify(request, env);
+    }
+
+    if (url.pathname === '/api/notify-new' && request.method === 'POST') {
+      return handleNotifyNew(request, env);
     }
 
     if (url.pathname.startsWith('/api/')) {

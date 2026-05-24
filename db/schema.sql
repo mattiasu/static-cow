@@ -4,3 +4,8 @@ CREATE TABLE IF NOT EXISTS subscribers (
     status     TEXT NOT NULL DEFAULT 'active'
                     CHECK (status IN ('active', 'unsubscribed'))
 );
+
+CREATE TABLE IF NOT EXISTS notified_posts (
+    slug        TEXT PRIMARY KEY,
+    notified_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
