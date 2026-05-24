@@ -12,6 +12,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
+    if (request.headers.get('host')?.startsWith('www.')) {
+      url.hostname = 'addy.se';
+      return Response.redirect(url.toString(), 301);
+    }
+
+
     if (url.pathname === '/api/subscribe' && request.method === 'POST') {
       return handleSubscribe(request, env);
     }
