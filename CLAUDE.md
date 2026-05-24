@@ -199,6 +199,28 @@ Variables split between `wrangler.toml` (non-secret config) and Cloudflare secre
 
 ---
 
+## CI/CD — GitHub Actions
+
+Workflow file: `.github/workflows/deploy.yml`
+
+Triggers on every push to `main`. Steps:
+1. `npm ci` — install dependencies
+2. `npm run build` — compile markdown → HTML into `dist/`
+3. `npx wrangler deploy` — deploy Worker + `dist/` assets to Cloudflare
+4. `curl POST /api/notify-new` — notify subscribers of new posts
+
+### GitHub secrets required
+| Secret | Purpose |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Authenticates `wrangler deploy` |
+| `NOTIFY_TOKEN` | Bearer token for the post-deploy subscriber notification |
+
+The workflow uses the `production` GitHub environment — set secrets there, not at the repo level.
+
+> **Never push directly to `main` with broken builds** — the deploy step runs unconditionally after the build, so a failed build aborts the whole workflow before any deployment happens.
+
+---
+
 ## Changelog
 
 _Track significant decisions and changes here so context is not lost between sessions._
