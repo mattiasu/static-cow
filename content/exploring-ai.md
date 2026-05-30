@@ -3,7 +3,7 @@ title: Svelte, Go, and the Genius AI Moron.
 date: 2025-06-29
 category: AI
 author: Mattias Uhlegård
-profileImage: /assets/images/muhlegard-green.jpg
+profileImage: muhlegard-green.jpg
 intro: Thought I was building a note-taking app. Ended up debugging the future of software development, with AI as my overly confident junior dev.
 tags: AI, Development, Architecture
 ---

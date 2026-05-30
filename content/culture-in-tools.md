@@ -3,7 +3,7 @@ title: The Culture in tools
 date: 2025-06-01
 category: Culture
 author: Mattias Uhlegård
-profileImage: /assets/images/muhlegard-green.jpg
+profileImage: muhlegard-green.jpg
 intro: This isn’t a post about messaging platforms. It’s about how organisations work, or want to work. For most companies I’ve worked with, I’ve watched teams perform brilliantly, and struggle, based on something as seemingly simple as where they write things down.
 tags: culture, organisation
 ---

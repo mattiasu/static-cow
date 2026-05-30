@@ -3,7 +3,7 @@ title: Architecture that slows down delivery is bad architecture.
 date: 2025-06-22
 category: Architecture
 author: Mattias Uhlegård
-profileImage: /assets/images/muhlegard-green.jpg
+profileImage: muhlegard-green.jpg
 intro: For years, I’ve worked at the intersection of product, platform, and enterprise architecture. I’ve seen firsthand how well-intentioned frameworks and governance models can become disconnected from the real work. Actually, slowing things down, not speeding them up.
 tags: collaboration, performance, EA
 ---

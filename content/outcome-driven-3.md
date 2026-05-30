@@ -3,8 +3,8 @@ title: Outcome-Driven Architecture: Part 3, shifting the story
 date: 2026-03-15
 category: Architecture
 author: Mattias Uhlegård
-profileImage: /assets/images/muhlegard-green.jpg
-hero: /assets/images/balance.jpg
+profileImage: muhlegard-green.jpg
+hero: balance.jpg
 intro: You've done the analysis. You know what needs to happen. You walk into the room and explain it clearly...  and still leave with nothing.
 tags: EA, Architecture, Engineering leadership
 ---

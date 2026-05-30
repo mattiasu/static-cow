@@ -3,7 +3,7 @@ title: Outcome-Driven Architecture: Balancing Code, Collaboration, and Context
 date: 2025-08-18
 category: Architecture
 author: Mattias Uhlegård
-profileImage: /assets/images/muhlegard-green.jpg
+profileImage: muhlegard-green.jpg
 intro: Architecture gets a bad reputation for slowing things down. But to me, it doesn’t have to. This is about what I've seen happen when you shift the focus from the idea of control to to outcomes, and start using architecture as a way to learn faster, adapt to context, and actually help teams deliver the right things.
 tags: collaboration, performance, EA
 ---

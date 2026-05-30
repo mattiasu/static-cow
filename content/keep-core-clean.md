@@ -3,8 +3,8 @@ title: Keep the core clean (Everyone agrees. Nobody does it.)
 date: 2026-05-10
 category: Architecture
 author: Mattias Uhlegård
-profileImage: /assets/images/muhlegard-green.jpg
-hero: /assets/images/clean-core.jpg
+profileImage: muhlegard-green.jpg
+hero: clean-core.jpg
 intro: There’s a sentence you hear a lot in enterprise architecture conversations. It sounds sensible, even obvious. “We should keep the core clean.” Heads nod. Someone writes it on a whiteboard. The meeting ends... And then the next request comes in.
 tags: technology, performance
 ---
