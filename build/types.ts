@@ -11,6 +11,7 @@ export interface Post {
   category: string;
   author: string;
   profileImage: string;
+  hero: string;
   content: string;     // Raw markdown body
 }
 

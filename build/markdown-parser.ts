@@ -124,6 +124,7 @@ function getAllPosts(contentDir: string): Post[] {
       category: getString(metadata, 'category'),
       author: getString(metadata, 'author'),
       profileImage: getString(metadata, 'profileImage'),
+      hero: getString(metadata, 'hero'),
       content,
     };
   }).filter((post): post is Post => post !== null);

@@ -1,7 +1,15 @@
 <a href="/posts/{{slug}}/" class="post-card">
-    <h2>{{title}}</h2>
-    {{#if intro}}<p class="excerpt">{{intro}}</p>{{/if}}
-    <div class="card-meta">
-        <time datetime="{{dateISO}}">{{dateShort}}</time>
+    {{#if hero}}<div class="card-hero">
+        <picture>
+            <source type="image/webp" srcset="{{heroWebp}}">
+            <img src="/assets/images/{{hero}}" alt="{{title}}">
+        </picture>
+    </div>{{/if}}
+    <div class="card-body">
+        <h2>{{title}}</h2>
+        {{#if intro}}<p class="excerpt">{{intro}}</p>{{/if}}
+        <div class="card-meta">
+            <time datetime="{{dateISO}}">{{dateShort}}</time>
+        </div>
     </div>
 </a>

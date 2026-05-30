@@ -1,18 +1,20 @@
---
+---
 title: Outcome-Driven Architecture: Part 3, shifting the story
 date: 2026-03-15
 category: Architecture
 author: Mattias Uhlegård
 profileImage: /assets/images/muhlegard-green.jpg
-intro: TBD.
+hero: /assets/images/balance.jpg
+intro: You've done the analysis. You know what needs to happen. You walk into the room and explain it clearly...  and still leave with nothing.
 tags: EA, Architecture, Engineering leadership
 ---
 
-After my last post on [outcome-driven architecture](https://addy.se/posts/outcome-driven-architecture/), I got a message from a former colleague. Good feedback, the kind that sticks. They liked the thinking but had one question: what does "outcome" actually mean in practice? It's easy to say architecture should be driven by outcomes. It's harder to explain what that looks like when you're standing in front of a leadership team that needs to make a real decision.
+After my last post on [outcome-driven architecture](https://addy.se/posts/outcome-driven-architecture-balancing-code-collaboration-and-context/), I got a message from a former colleague. Good feedback, the kind that sticks. They liked the thinking but had one question: what does "outcome" actually mean in practice? It's easy to say architecture should be driven by outcomes. It's harder to explain what that looks like when you're standing in front of a leadership team that needs to make a real decision.
 Fair point. This is my attempt to answer that.
 
 ## Familiar story
 If you've worked with software development or in IT, perhaps even "Digital", you've probably all been there. You've done the analysis. You know the system is struggling. You know what needs to happen. You walk into the room, whether that's a Slack channel, a steering committee, or an investment review, and you explain it clearly. And then the questions start.
+
 
 "Can't we just fix it for now?"
 
@@ -46,7 +48,6 @@ That's the actual job. Not translating technology into business language. Drawin
 ### So, back to the original question: what is an outcome, actually?
 
 > Well, it depends. An architecs standard answer. 
->
 > And No, that's not a cop-out, it's the honest answer.
 
 In a digital native company, everyone can see how the pieces connect. Not because they're smarter, but because the system was built that way from the start. Customer acquisition cost, conversion rate, time to deploy. The metrics are close to the surface and the teams that influence them know it. The wiring is short.

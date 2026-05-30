@@ -145,6 +145,7 @@ function generateHomepage(posts: Post[], templatesDir: string, outputDir: string
   const postCardTemplate = fs.readFileSync(path.join(templatesDir, 'post-card.html'), 'utf-8');
 
   const postCards = posts.map(post => {
+    const heroBase = post.hero ? path.parse(post.hero).name : '';
     return renderTemplate(postCardTemplate, {
       slug: post.slug,
       title: post.title,
@@ -155,6 +156,8 @@ function generateHomepage(posts: Post[], templatesDir: string, outputDir: string
       excerpt: post.excerpt,
       intro: post.intro,
       tags: post.tags,
+      hero: post.hero,
+      heroWebp: heroBase ? `/assets/images/${heroBase}-400x225.webp` : '',
     });
   }).join('\n');
 
@@ -248,6 +251,7 @@ function generateTagPages(posts: Post[], templatesDir: string, outputDir: string
     if (!tagPosts) return;
 
     const postCards = tagPosts.map(post => {
+      const heroBase = post.hero ? path.parse(post.hero).name : '';
       return renderTemplate(postCardTemplate, {
         slug: post.slug,
         title: post.title,
@@ -258,6 +262,8 @@ function generateTagPages(posts: Post[], templatesDir: string, outputDir: string
         excerpt: post.excerpt,
         intro: post.intro,
         tags: post.tags,
+        hero: post.hero,
+        heroWebp: heroBase ? `/assets/images/${heroBase}-400x225.webp` : '',
       });
     }).join('\n');
 
