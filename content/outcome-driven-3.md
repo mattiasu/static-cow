@@ -27,7 +27,7 @@ If you've come from a digital native company, you probably haven't hit this wall
 In a large traditional enterprise, that connection still exists. It's just buried. Under decades of system integrations, market-specific workarounds, inherited platforms, and organizational layers that were never designed to talk to each other. Nobody is deliberately hiding the relationship between your legacy system and the metric that matters. It's just that nobody has ever had to draw it explicitly, because the org grew faster than its own legibility.
 That gap, between the decision and the outcome, is exactly what most engineering leaders walk into when they move into larger organizations. And why good technical decisions so often die in the wrong room.
 
-![excalidraw](disconnect.svg)
+?[excalidraw](disconnect.svg)
 
 ### Same room, different language
 

@@ -30,7 +30,7 @@ Over time, I’ve seen the Slack vs Teams discussion map quite linearly to a bro
 
 Here’s what that tends to look like:
 
-![excalidraw](slackvteams.svg)
+?[excalidraw](slackvteams.svg)
 
 Of course, this isn’t the only perspective to consider. Most organisations already weigh the usual factors: license cost, included functionality, Office365 integration, Teams meeting adoption, and increasingly, the role of Copilot and other AI enhancements.
 

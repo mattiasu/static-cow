@@ -5,6 +5,7 @@
   "main": "build/build.ts",
   "scripts": {
     "build": "ts-node build/build.ts",
+    "optimize-images": "ts-node build/optimize-images.ts",
     "dev": "ts-node build/dev.ts",
     "clean": "rm -rf dist",
     "deploy": "npm run build && wrangler deploy && curl -sf -X POST https://addy.se/api/notify-new -H \"Authorization: Bearer $NOTIFY_TOKEN\""

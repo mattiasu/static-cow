@@ -10,7 +10,7 @@
     
     <div class="post-meta-full">
         <div class="author-section">
-            {{#if profileImage}}<img src="{{profileImage}}" alt="{{author}}" class="author-profile">{{/if}}
+            {{#if profileImage}}<picture><source type="image/webp" srcset="{{profileImageWebp}}"><img src="{{profileImage}}" alt="{{author}}" class="author-profile"></picture>{{/if}}
             <div class="author-info">
                 {{#if author}}<span class="article-author">{{author}}</span>{{/if}}
                 <div class="post-meta">

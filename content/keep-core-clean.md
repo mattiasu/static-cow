@@ -22,7 +22,7 @@ But at least with SAP and Salesforce, you can point at the vendor. The platform 
 
 This is the version of the problem that has no vendor to blame. It’s a people problem, dressed up as a technical one.
 
-![excalidraw](c-e-e.svg)
+?[excalidraw](c-e-e.svg)
 
 ## The cost of friction
 

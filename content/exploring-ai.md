@@ -64,7 +64,7 @@ This isn’t hypothetical. If we move toward more agentic AI systems, or even ju
 
 Any break in this evolution creates major friction. I’d even argue that our ways of working and holistic understanding need to evolve faster and stay ahead of the code parts. Anyhow, either the AI writes impressive but disconnected code, or developers lose track of the big picture and start debugging by trial and error. Neither scales.
 
-![excalidraw](3-ai-dev.svg)
+?[excalidraw](3-ai-dev.svg)
 
 ## So what happens when AI doesn’t know?
 

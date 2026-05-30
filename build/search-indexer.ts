@@ -14,7 +14,7 @@ export function stripMarkdown(text: string): string {
   result = result.replace(/```[\s\S]*?```/g, '');
 
   // Excalidraw image tags — drop entirely, no prose value
-  result = result.replace(/!\[excalidraw\]\([^)]*\)/g, '');
+  result = result.replace(/\?\[excalidraw\]\([^)]*\)/g, '');
 
   // Image tags — drop entirely
   result = result.replace(/!\[[^\]]*\]\([^)]*\)/g, '');

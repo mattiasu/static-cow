@@ -20,7 +20,7 @@ This is what I mean by Outcome-Driven Architecture.
 
 ## Architecture That Keeps Up
 
-![excalidraw](speed-timeline.svg)
+?[excalidraw](speed-timeline.svg)
 
 When we were rolling out a new internal platform at one of the companies I've worked at, we began with rapid iterations to validate ideas. In that phase, speed meant learning quickly and adjusting fast. That ability to do rapid exploring and quickly remove the ideas that wasn't as good as we imaged is worth it's own article. It requires grit, method, cultural investments, but well worth focusing on.
 

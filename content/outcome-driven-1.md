@@ -36,7 +36,7 @@ We’re not slowing you down with more process. We’re speeding you up by remov
 
 Also, one of the most frequent, and palpable, friction between traditional business SMEs and departments collaborating with software engineering teams is what iteration means, in practice. Many of the cross-organisation collaboration I’ve facilitated or contributed to has that element of unsettled misalignment between “ship fast”, “target state”, “MVP”, “benchmark”. In short, misalignment due to speaking different languages.
 
-![excalidraw](sme-v-eng.svg)
+?[excalidraw](sme-v-eng.svg)
 
 In my experience, this is also where Outcome-Driven Architecture supports.
 
