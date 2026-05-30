@@ -336,7 +336,7 @@ function generatePages(contentDir: string, templatesDir: string, outputDir: stri
   const baseTemplate = fs.readFileSync(path.join(templatesDir, 'base.html'), 'utf-8');
   const pageTemplate = fs.readFileSync(path.join(templatesDir, 'page.html'), 'utf-8');
 
-  const pageFiles = ['about.md', 'privacy.md'];
+  const pageFiles = ['about.md', 'privacy.md', '404.md'];
 
   pageFiles.forEach(file => {
     const filePath = path.join(contentDir, file);

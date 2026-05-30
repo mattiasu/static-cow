@@ -38,6 +38,18 @@ export default {
       });
     }
 
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+
+    if (response.status === 404) {
+      const notFoundPage = await env.ASSETS.fetch(
+        new Request(new URL('/404/', request.url).toString())
+      );
+      return new Response(notFoundPage.body, {
+        status: 404,
+        headers: notFoundPage.headers,
+      });
+    }
+
+    return response;
   },
 };
