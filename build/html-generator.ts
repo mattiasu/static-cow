@@ -164,7 +164,7 @@ function generateHomepage(posts: Post[], templatesDir: string, outputDir: string
   const homepageContent = renderTemplate(homepageTemplate, { posts: postCards });
 
   const html = renderTemplate(baseTemplate, {
-    title: 'My Blog',
+    title: 'addy.se',
     description: 'Thoughts on architecture, leadership, engineering, and humans in the loop.',
     content: homepageContent,
   });
