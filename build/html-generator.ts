@@ -293,7 +293,7 @@ function copyAssets(srcDir: string, outputDir: string): void {
   const files = fs.readdirSync(srcDir);
 
   files.forEach(file => {
-    if (file.endsWith('.css') || file.endsWith('.js')) {
+    if (file.endsWith('.css') || file.endsWith('.js') || file.endsWith('.txt')) {
       const src = path.join(srcDir, file);
       const dest = path.join(outputDir, file);
       fs.copyFileSync(src, dest);
