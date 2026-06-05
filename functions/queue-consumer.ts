@@ -4,6 +4,7 @@ export async function handleQueueBatch(
   batch: MessageBatch<NotificationMessage>,
   env: Env
 ): Promise<void> {
+  console.log(`[queue] received batch of ${batch.messages.length} messages`);
   for (const msg of batch.messages) {
     const { type } = msg.body;
 
