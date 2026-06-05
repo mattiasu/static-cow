@@ -185,6 +185,7 @@ function generateArticles(posts: Post[], templatesDir: string, outputDir: string
     const htmlContent = markdownToHtml(post.content);
 
     const articleContent = renderTemplate(articleTemplate, {
+      slug: post.slug,
       title: post.title,
       date: post.date,
       dateShort: post.dateShort,
