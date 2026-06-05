@@ -24,7 +24,7 @@ export async function handleQueueBatch(
       tags = 'email';
     }
 
-    await fetch(`https://ntfy.sh/${env.NTFY_TOPIC}`, {
+    const res = await fetch(`https://ntfy.sh/${env.NTFY_TOPIC}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.NTFY_API_KEY}`,
@@ -33,6 +33,7 @@ export async function handleQueueBatch(
       },
       body,
     });
+    console.log(`[queue] ntfy response: ${res.status}`);
 
     msg.ack();
   }
