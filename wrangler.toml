@@ -7,6 +7,15 @@ binding = "SUBSCRIBERS_DB"
 database_name = "SUBSCRIBERS_DB"
 database_id = "7002e4e4-c085-4b1b-95c4-0e340a4409aa"
 
+[[queues.producers]]
+binding = "NOTIFICATIONS_QUEUE"
+queue = "blog-notifications"
+
+[[queues.consumers]]
+queue = "blog-notifications"
+max_batch_size = 10
+max_batch_timeout = 5
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"

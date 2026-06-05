@@ -2,12 +2,20 @@ import { handleSubscribe } from './api/subscribe';
 import { handleNotify } from './api/notify';
 import { handleNotifyNew } from './api/notify-new';
 import { handleFeedback } from './api/feedback';
+import { handleQueueBatch } from './queue-consumer';
+
+export type NotificationMessage =
+  | { type: 'feedback'; slug: string; reaction: 'up' | 'down'; comment?: string }
+  | { type: 'subscribe'; email: string };
 
 export interface Env {
   ASSETS: Fetcher;
   SUBSCRIBERS_DB: D1Database;
   RESEND_API_KEY: string;
   NOTIFY_TOKEN: string;
+  NTFY_API_KEY: string;
+  NTFY_TOPIC: string;
+  NOTIFICATIONS_QUEUE: Queue<NotificationMessage>;
 }
 
 export default {
@@ -56,5 +64,9 @@ export default {
     }
 
     return response;
+  },
+
+  async queue(batch: MessageBatch<NotificationMessage>, env: Env): Promise<void> {
+    return handleQueueBatch(batch, env);
   },
 };

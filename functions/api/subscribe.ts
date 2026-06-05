@@ -35,5 +35,7 @@ export async function handleSubscribe(request: Request, env: Env): Promise<Respo
     throw err;
   }
 
+  await env.NOTIFICATIONS_QUEUE.send({ type: 'subscribe', email });
+
   return json({ message: 'Subscribed successfully' }, 201);
 }

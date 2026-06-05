@@ -37,5 +37,7 @@ export async function handleFeedback(request: Request, env: Env): Promise<Respon
     .bind(slug, reaction, comment ?? null)
     .run();
 
+  await env.NOTIFICATIONS_QUEUE.send({ type: 'feedback', slug, reaction: reaction as 'up' | 'down', comment });
+
   return json({ message: 'Feedback received' }, 201);
 }
