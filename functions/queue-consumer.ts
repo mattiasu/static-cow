@@ -4,7 +4,6 @@ export async function handleQueueBatch(
   batch: MessageBatch<NotificationMessage>,
   env: Env
 ): Promise<void> {
-  console.log(`[queue] received batch of ${batch.messages.length} messages`);
   for (const msg of batch.messages) {
     const { type } = msg.body;
 
@@ -24,7 +23,7 @@ export async function handleQueueBatch(
       tags = 'email';
     }
 
-    const res = await fetch(`https://ntfy.sh/${env.NTFY_TOPIC}`, {
+    await fetch(`https://ntfy.sh/${env.NTFY_TOPIC}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.NTFY_API_KEY}`,
@@ -33,7 +32,6 @@ export async function handleQueueBatch(
       },
       body,
     });
-    console.log(`[queue] ntfy response: ${res.status}`);
 
     msg.ack();
   }
