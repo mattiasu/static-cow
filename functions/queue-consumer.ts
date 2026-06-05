@@ -26,7 +26,7 @@ export async function handleQueueBatch(
     await fetch(`https://ntfy.sh/${env.NTFY_TOPIC}`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.NTFY_API_KEY}`,
+        'Authorization': `Bearer ${env.NTFY_API_KEY.trim()}`,
         'X-Title': title,
         'X-Tags': tags,
       },
