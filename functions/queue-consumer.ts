@@ -23,10 +23,12 @@ export async function handleQueueBatch(
       tags = 'email';
     }
 
-    await fetch(`https://ntfy.sh/${env.NTFY_TOPIC}`, {
+    await fetch(`https://defl.addy.se`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${env.NTFY_API_KEY.trim()}`,
+        'CF-Access-Client-Id': env.CF_ACCESS_CLIENT_ID,
+        'CF-Access-Client-Secret': env.CF_ACCESS_CLIENT_SECRET,
+        'X-Target-Url': `https://ntfy.sh/${env.NTFY_TOPIC}`,
         'X-Title': title,
         'X-Tags': tags,
       },

@@ -13,8 +13,9 @@ export interface Env {
   SUBSCRIBERS_DB: D1Database;
   RESEND_API_KEY: string;
   NOTIFY_TOKEN: string;
-  NTFY_API_KEY: string;
   NTFY_TOPIC: string;
+  CF_ACCESS_CLIENT_ID: string;
+  CF_ACCESS_CLIENT_SECRET: string;
   NOTIFICATIONS_QUEUE: Queue<NotificationMessage>;
 }
 
