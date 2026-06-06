@@ -22,5 +22,6 @@ binding = "ASSETS"
 run_worker_first = ["/api/*"]
 
 [observability.logs]
-enabled = false
+enabled = true
 invocation_logs = true
+
