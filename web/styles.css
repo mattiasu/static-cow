@@ -131,6 +131,7 @@ main {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     display: inline-block;
+    font-weight: 500;
 }
 
 /* Newsletter Section */
@@ -711,15 +712,12 @@ mark {
 
 /* Feedback widget */
 .feedback-widget {
-    margin-top: 48px;
-    padding-top: 32px;
-    border-top: 1px solid var(--color-border);
+    margin-top: 28px;
 }
 
 .feedback-prompt {
     font-size: var(--font-size-meta);
-    color: var(--color-text-secondary);
-    margin-bottom: 12px;
+    color: var(--color-heading);
 }
 
 .feedback-reactions {
@@ -741,7 +739,7 @@ mark {
     transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
-.feedback-btn:hover {
+.feedback-btn:not(.feedback-btn--active):hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
 }
@@ -754,10 +752,13 @@ mark {
 
 .feedback-form {
     margin-top: 16px;
-    display: flex;
     flex-direction: column;
     gap: 10px;
     max-width: 480px;
+}
+
+.feedback-form:not([hidden]) {
+    display: flex;
 }
 
 .feedback-textarea {
