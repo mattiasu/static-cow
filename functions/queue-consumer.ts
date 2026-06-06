@@ -23,7 +23,9 @@ export async function handleQueueBatch(
       tags = 'email';
     }
 
-    await fetch(`https://defl.addy.se`, {
+    console.log(`[queue] sending notification type=${type} title="${title}" target=ntfy.sh/${env.NTFY_TOPIC}`);
+
+    const res = await fetch(`https://defl.addy.se`, {
       method: 'POST',
       headers: {
         'CF-Access-Client-Id': env.CF_ACCESS_CLIENT_ID,
@@ -34,6 +36,12 @@ export async function handleQueueBatch(
       },
       body,
     });
+
+    console.log(`[queue] defl.addy.se responded status=${res.status}`);
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`[queue] error response body: ${text}`);
+    }
 
     msg.ack();
   }
