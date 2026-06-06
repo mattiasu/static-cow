@@ -20,3 +20,7 @@ max_batch_timeout = 5
 directory = "./dist"
 binding = "ASSETS"
 run_worker_first = ["/api/*"]
+
+[observability.logs]
+enabled = false
+invocation_logs = true
