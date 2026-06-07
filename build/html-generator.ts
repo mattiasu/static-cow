@@ -213,7 +213,7 @@ function generateArticles(posts: Post[], templatesDir: string, outputDir: string
     });
 
     const html = renderTemplate(baseTemplate, {
-      title: `${post.title} | My Blog`,
+      title: `${post.title} | Mattias Uhlegård`,
       description: post.intro,
       canonicalUrl: `${siteUrl}/posts/${post.slug}/`,
       jsonLd,
