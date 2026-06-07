@@ -31,8 +31,9 @@ export async function handleQueueBatch(
         'CF-Access-Client-Id': env.CF_ACCESS_CLIENT_ID,
         'CF-Access-Client-Secret': env.CF_ACCESS_CLIENT_SECRET,
         'X-Target-Url': `https://ntfy.sh/${env.NTFY_TOPIC}`,
-        'X-Title': title,
-        'X-Tags': tags,
+        'defl-forward-auth-token': env.NTFY_ACCESS_TOKEN,
+        'defl-x-title': title,
+        'defl-x-tags': tags,
       },
       body,
     });

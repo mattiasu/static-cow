@@ -14,6 +14,7 @@ export interface Env {
   RESEND_API_KEY: string;
   NOTIFY_TOKEN: string;
   NTFY_TOPIC: string;
+  NTFY_ACCESS_TOKEN: string;
   CF_ACCESS_CLIENT_ID: string;
   CF_ACCESS_CLIENT_SECRET: string;
   NOTIFICATIONS_QUEUE: Queue<NotificationMessage>;
