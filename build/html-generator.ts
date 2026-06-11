@@ -278,7 +278,7 @@ function generateTagPages(posts: Post[], templatesDir: string, outputDir: string
         `;
 
     const html = renderTemplate(baseTemplate, {
-      title: `${tag} | My Blog`,
+      title: `${tag} | addy.se`,
       description: `Posts tagged: ${tag}`,
       content: tagContent,
     });
@@ -369,7 +369,7 @@ function generatePages(contentDir: string, templatesDir: string, outputDir: stri
 
     const pageHtml = renderTemplate(pageTemplate, { title, content: htmlContent });
     const html = renderTemplate(baseTemplate, {
-      title: `${title} | My Blog`,
+      title: `${title} | addy.se`,
       description: description || title,
       content: pageHtml,
     });
