@@ -5,6 +5,8 @@ interface SearchEntry {
   title: string;
   intro: string;
   date: string;
+  hero: string;
+  firstParagraph: string;
 }
 
 interface NotifiedPost {
@@ -28,13 +30,18 @@ const BATCH_SIZE = 100;
 
 function buildEmailHtml(post: SearchEntry): string {
   const postUrl = `${SITE_URL}/posts/${post.slug}/`;
+  const heroImg = post.hero
+    ? `<img src="${SITE_URL}/assets/images/${post.hero}" alt="${post.title}" style="width:100%;max-width:600px;height:auto;display:block;border-radius:4px;margin-bottom:24px;">`
+    : '';
   return `<!DOCTYPE html>
 <html lang="en">
 <body style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#111;">
+  ${heroImg}
   <h1 style="font-size:22px;margin-bottom:6px;">${post.title}</h1>
   <p style="color:#888;font-size:13px;margin-bottom:20px;">${post.date}</p>
-  <p style="font-size:16px;line-height:1.6;margin-bottom:24px;">${post.intro}</p>
-  <a href="${postUrl}" style="color:#0066cc;font-size:15px;">Read the full article →</a>
+  <p style="font-size:16px;line-height:1.6;margin-bottom:16px;">${post.intro}</p>
+  ${post.firstParagraph ? `<p style="font-size:15px;line-height:1.6;color:#444;margin-bottom:24px;">${post.firstParagraph}</p>` : ''}
+  <a href="${postUrl}" style="color:#2DC093;font-size:15px;">Read the full article →</a>
 </body>
 </html>`;
 }

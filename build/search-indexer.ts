@@ -43,6 +43,30 @@ export function stripMarkdown(text: string): string {
 }
 
 /**
+ * Extracts the first prose paragraph from raw markdown.
+ * Skips headings, code blocks, images, lists, blockquotes, and excalidraw tags.
+ */
+export function extractFirstParagraph(content: string): string {
+  const blocks = content.split(/\n\n+/);
+  for (const block of blocks) {
+    const trimmed = block.trim();
+    if (
+      !trimmed ||
+      trimmed.startsWith('#') ||
+      trimmed.startsWith('```') ||
+      trimmed.startsWith('?[excalidraw]') ||
+      trimmed.startsWith('![') ||
+      trimmed.startsWith('* ') ||
+      trimmed.startsWith('- ') ||
+      /^\d+\. /.test(trimmed) ||
+      trimmed.startsWith('>')
+    ) continue;
+    return stripMarkdown(trimmed);
+  }
+  return '';
+}
+
+/**
  * Writes dist/search-index.json from all posts.
  * Full content is included as stripped plain text for content-match scoring.
  */
@@ -54,6 +78,8 @@ export function generateSearchIndex(posts: Post[], outputDir: string): void {
     tags: post.tags,
     date: post.dateShort,
     content: stripMarkdown(post.content),
+    hero: post.hero,
+    firstParagraph: extractFirstParagraph(post.content),
   }));
 
   const json = JSON.stringify(entries);

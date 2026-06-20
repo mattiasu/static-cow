@@ -26,4 +26,6 @@ export interface SearchEntry {
   tags: string[];
   date: string;
   content: string;
+  hero: string;
+  firstParagraph: string;
 }
