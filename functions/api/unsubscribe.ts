@@ -24,6 +24,7 @@ function page(title: string, message: string): string {
 <body>
   <h1>${title}</h1>
   <p>${message}</p>
+  <p><em>Stay safe &amp;</em> 👍</p>
   <p><a href="/">← Back to addy.se</a></p>
 </body>
 </html>`;
@@ -56,7 +57,7 @@ export async function handleUnsubscribe(request: Request, env: Env): Promise<Res
   }
 
   return htmlResponse(
-    page('Unsubscribed', "You've been removed from the list. No more emails from me. Take care!"),
+    page('Unsubscribed', "Ah, sorry to see you go. That said, you've been removed from the list. No more emails from me."),
     200,
   );
 }
