@@ -6,8 +6,9 @@ const SITE_URL = 'https://addy.se';
 const OUTPUT = '/tmp/newsletter-preview.html';
 
 // Mirrors buildEmailHtml in functions/api/notify-new.ts — keep in sync
-function buildEmailHtml(post: SearchEntry): string {
+function buildEmailHtml(post: SearchEntry, unsubscribeToken: string): string {
   const postUrl = `${SITE_URL}/posts/${post.slug}/`;
+  const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${unsubscribeToken}`;
   const heroImg = post.hero
     ? `<img src="${SITE_URL}/assets/images/${post.hero}" alt="${post.title}" style="width:100%;max-width:600px;height:auto;display:block;border-radius:4px;margin-bottom:24px;">`
     : '';
@@ -20,6 +21,9 @@ function buildEmailHtml(post: SearchEntry): string {
   <p style="font-size:16px;line-height:1.6;margin-bottom:16px;">${post.intro}</p>
   ${post.firstParagraph ? `<p style="font-size:15px;line-height:1.6;color:#444;margin-bottom:24px;">${post.firstParagraph}</p>` : ''}
   <a href="${postUrl}" style="color:#2DC093;font-size:15px;">Read the full article →</a>
+  <p style="margin-top:40px;font-size:12px;color:#999;text-align:center;">
+    <a href="${unsubscribeUrl}" style="color:#999;text-decoration:none;">Unsubscribe</a>
+  </p>
 </body>
 </html>`;
 }
@@ -37,6 +41,6 @@ if (entries.length === 0) {
 }
 
 const latest = entries[0];
-fs.writeFileSync(OUTPUT, buildEmailHtml(latest));
+fs.writeFileSync(OUTPUT, buildEmailHtml(latest, 'preview-token-not-real'));
 console.log(`✅  ${OUTPUT}`);
 console.log(`    Post: "${latest.title}"`);

@@ -2,6 +2,7 @@ import { handleSubscribe } from './api/subscribe';
 import { handleNotify } from './api/notify';
 import { handleNotifyNew } from './api/notify-new';
 import { handleFeedback } from './api/feedback';
+import { handleUnsubscribe } from './api/unsubscribe';
 import { handleQueueBatch } from './queue-consumer';
 
 export type NotificationMessage =
@@ -44,6 +45,10 @@ export default {
 
     if (url.pathname === '/api/feedback' && request.method === 'POST') {
       return handleFeedback(request, env);
+    }
+
+    if (url.pathname === '/unsubscribe' && request.method === 'GET') {
+      return handleUnsubscribe(request, env);
     }
 
     if (url.pathname.startsWith('/api/')) {

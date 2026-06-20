@@ -23,10 +23,12 @@ export async function handleSubscribe(request: Request, env: Env): Promise<Respo
     return json({ error: 'Invalid email address' }, 400);
   }
 
+  const token = crypto.randomUUID();
+
   try {
     await env.SUBSCRIBERS_DB
-      .prepare('INSERT INTO subscribers (email) VALUES (?)')
-      .bind(email)
+      .prepare('INSERT INTO subscribers (email, unsubscribe_token) VALUES (?, ?)')
+      .bind(email, token)
       .run();
   } catch (err: unknown) {
     if (err instanceof Error && err.message.includes('UNIQUE constraint failed')) {

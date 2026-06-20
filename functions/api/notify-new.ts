@@ -15,6 +15,7 @@ interface NotifiedPost {
 
 interface Subscriber {
   email: string;
+  unsubscribe_token: string | null;
 }
 
 function json(body: Record<string, unknown>, status: number): Response {
@@ -28,8 +29,9 @@ const FROM_ADDRESS = 'newsletter@addy.se';
 const SITE_URL = 'https://addy.se';
 const BATCH_SIZE = 100;
 
-function buildEmailHtml(post: SearchEntry): string {
+function buildEmailHtml(post: SearchEntry, unsubscribeToken: string): string {
   const postUrl = `${SITE_URL}/posts/${post.slug}/`;
+  const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${unsubscribeToken}`;
   const heroImg = post.hero
     ? `<img src="${SITE_URL}/assets/images/${post.hero}" alt="${post.title}" style="width:100%;max-width:600px;height:auto;display:block;border-radius:4px;margin-bottom:24px;">`
     : '';
@@ -42,6 +44,9 @@ function buildEmailHtml(post: SearchEntry): string {
   <p style="font-size:16px;line-height:1.6;margin-bottom:16px;">${post.intro}</p>
   ${post.firstParagraph ? `<p style="font-size:15px;line-height:1.6;color:#444;margin-bottom:24px;">${post.firstParagraph}</p>` : ''}
   <a href="${postUrl}" style="color:#2DC093;font-size:15px;">Read the full article →</a>
+  <p style="margin-top:40px;font-size:12px;color:#999;text-align:center;">
+    <a href="${unsubscribeUrl}" style="color:#999;text-decoration:none;">Unsubscribe</a>
+  </p>
 </body>
 </html>`;
 }
@@ -79,7 +84,7 @@ export async function handleNotifyNew(request: Request, env: Env): Promise<Respo
   }
 
   const { results: subscribers } = await env.SUBSCRIBERS_DB
-    .prepare('SELECT email FROM subscribers WHERE status = ?')
+    .prepare('SELECT email, unsubscribe_token FROM subscribers WHERE status = ?')
     .bind('active')
     .all<Subscriber>();
 
@@ -97,8 +102,6 @@ export async function handleNotifyNew(request: Request, env: Env): Promise<Respo
   let totalSent = 0;
 
   for (const post of newPosts) {
-    const html = buildEmailHtml(post);
-
     for (let i = 0; i < subscribers.length; i += BATCH_SIZE) {
       const chunk = subscribers.slice(i, i + BATCH_SIZE);
       const res = await fetch('https://api.resend.com/emails/batch', {
@@ -108,11 +111,11 @@ export async function handleNotifyNew(request: Request, env: Env): Promise<Respo
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(
-          chunk.map(({ email }) => ({
+          chunk.map(({ email, unsubscribe_token }) => ({
             from: FROM_ADDRESS,
             to: email,
             subject: post.title,
-            html,
+            html: buildEmailHtml(post, unsubscribe_token ?? ''),
           }))
         ),
       });
