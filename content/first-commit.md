@@ -4,7 +4,7 @@ date: 2025-05-30
 category: Welcome
 author: Mattias Uhlegård
 profileImage: muhlegard-green.jpg
-hero: write.jpg
+hero: init-commit.jpg
 intro: For most of my senior career,  I’ve focused all my energy on building strong teams, learning new cool stuff, driving change, and solving real and hard problems inside companies. That’s been my priority, and honestly, I’ve never thought twice about it.
 tags: 
 ---

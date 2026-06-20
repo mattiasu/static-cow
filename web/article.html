@@ -21,7 +21,16 @@
             </div>
         </div>
     </div>
-    
+
+    {{#if heroWebp}}
+    <figure class="article-hero">
+        <picture>
+            <source type="image/webp" srcset="{{heroWebp}}">
+            <img src="/assets/images/{{hero}}" alt="{{title}}">
+        </picture>
+    </figure>
+    {{/if}}
+
     <div class="post-content">
         {{content}}
     </div>

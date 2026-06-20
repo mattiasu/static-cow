@@ -5,7 +5,7 @@ author: Mattias Uhlegård
 date: 2026-05-31
 profileImage: muhlegard-green.jpg
 tags: Open-Source, Strategy
-hero: oss.jpg
+hero: oss-eco.jpeg
 intro: The internet is built on OSS, I believe the future is based on OSS and it's open principles. But are companies paying attention?
 ---
 

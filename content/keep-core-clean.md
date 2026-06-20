@@ -4,7 +4,7 @@ date: 2026-05-10
 category: Architecture
 author: Mattias Uhlegård
 profileImage: muhlegard-green.jpg
-hero: clean-core.jpg
+hero: core.jpg
 intro: There’s a sentence you hear a lot in enterprise architecture conversations. It sounds sensible, even obvious. “We should keep the core clean.” Heads nod. Someone writes it on a whiteboard. The meeting ends... And then the next request comes in.
 tags: technology, performance
 ---

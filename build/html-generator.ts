@@ -183,6 +183,7 @@ function generateArticles(posts: Post[], templatesDir: string, outputDir: string
 
   posts.forEach(post => {
     const htmlContent = markdownToHtml(post.content);
+    const heroBase = post.hero ? path.parse(post.hero).name : '';
 
     const articleContent = renderTemplate(articleTemplate, {
       slug: post.slug,
@@ -200,6 +201,8 @@ function generateArticles(posts: Post[], templatesDir: string, outputDir: string
         : '',
       intro: post.intro,
       content: htmlContent,
+      hero: post.hero,
+      heroWebp: heroBase ? `/assets/images/${heroBase}-1200x630.webp` : '',
     });
 
     const jsonLd = JSON.stringify({

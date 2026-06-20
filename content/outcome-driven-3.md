@@ -4,7 +4,7 @@ date: 2026-03-15
 category: Architecture
 author: Mattias Uhlegård
 profileImage: muhlegard-green.jpg
-hero: balance.jpg
+hero: spin.jpg
 intro: You've done the analysis. You know what needs to happen. You walk into the room and explain it clearly...  and still leave with nothing.
 tags: EA, Architecture, Engineering leadership
 ---

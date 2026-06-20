@@ -4,7 +4,7 @@ date: 2026-06-07
 category: AI
 author: Mattias Uhlegård
 profileImage: muhlegard-green.jpg
-hero: explore-ai-again.jpeg
+hero: ai-balance.jpg
 intro: A year ago I wrote about building with Go, Svelte, and AI assistance. I called it a genius moron. That framing worked for a while. It doesn't anymore.
 tags: AI, Engineering culture, Architecture
 ---
