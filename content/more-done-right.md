@@ -33,7 +33,7 @@ That kind of visibility creates natural discipline. Not because someone mandates
 
 Move that same person into an enterprise architecture role, and suddenly the trajectory is much longer. You're advising platform teams, shaping governance models, negotiating tool standards. The customer is still there, but several layers removed. And the temptation, when you can't see the customer directly, is to optimize for what you can see: compliance, cost, control.
 
-That's how you end up defending SharePoint.🙈
+> That's how you end up defending SharePoint.🙈
 
 
 ## The tool trap
