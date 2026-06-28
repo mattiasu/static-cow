@@ -730,6 +730,7 @@ mark {
 .feedback-prompt {
     font-size: var(--font-size-meta);
     color: var(--color-heading);
+    padding-bottom: 10px;
 }
 
 .feedback-reactions {
